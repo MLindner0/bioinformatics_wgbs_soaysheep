@@ -15,7 +15,7 @@ Channel
 log.info """\
     R N A S E Q - N F   P I P E L I N E
     ===================================
-    projectdir   : ${pparams.project}
+    projectdir   : ${params.project}
     workdir      : $workDir
     """
     .stripIndent()
