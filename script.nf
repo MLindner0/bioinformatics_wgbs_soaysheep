@@ -48,6 +48,7 @@ process MULTIQC {
     script:
     """
     echo multiqc .
+    touch multiqc_report.html
     """
 }
 
