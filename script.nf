@@ -17,12 +17,13 @@ log.info """\
     ===================================
     workdir      : $workDir
     projectdir   : ${params.project}
-    QCout        : ${params.project}/
+    QCout        : ${params.qcdir}
     """
     .stripIndent()
 
 process FASTQC {
     tag "FASTQC on $sample_id"
+    memory { 250.MB * task.cpus }
 
     input:
     tuple val(sample_id), path(reads)
@@ -32,8 +33,8 @@ process FASTQC {
 
     script:
     """
-    mkdir fastqc_${sample_id}_logs
-    echo fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads}
+    fastqc_${sample_id}_logs
+    fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads}
     """
 }
 
@@ -48,8 +49,7 @@ process MULTIQC {
 
     script:
     """
-    echo multiqc .
-    touch multiqc_report.html
+    multiqc .
     """
 }
 
