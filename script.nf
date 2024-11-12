@@ -15,6 +15,7 @@ Channel
 log.info """\
     R N A S E Q - N F   P I P E L I N E
     ===================================
+    workdir      : $workDir
     projectdir   : ${params.project}
     QCout        : ${params.project}/
     """
