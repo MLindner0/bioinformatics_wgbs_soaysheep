@@ -29,7 +29,7 @@ workflow {
 
     fastqc_ch = FASTQC(read_pairs_ch)
     trimgalore_ch = TRIMGALORE(read_pairs_ch)
-    trimmed_fastqc_ch = FASTQC_TRIMMED(trimgalore_ch.groupTuple())
+    trimmed_fastqc_ch = FASTQC_TRIMMED(trimgalore_ch.out.fastq)
     MULTIQC(fastqc_ch.mix(trimmed_fastqc_ch).collect())
     
 }

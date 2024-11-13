@@ -28,8 +28,7 @@ process TRIMGALORE {
     tuple val(sample_id), path(reads)
 
     output:
-    path "trimgalore_${sample_id}_logs/${sample_id}_R1_val_1.fq.gz"
-    path "trimgalore_${sample_id}_logs/${sample_id}_R2_val_2.fq.gz"
+    tuple val(sample_id), path("trimgalore_*/*fq.gz"), emit: fastq
 
     script:
     """
