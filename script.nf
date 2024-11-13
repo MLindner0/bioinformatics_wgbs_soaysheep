@@ -85,6 +85,7 @@ workflow {
 
     fastqc_ch = FASTQC(read_pairs_ch)
     trimgalore_ch = TRIMGALORE(read_pairs_ch)
-    MULTIQC(fastqc_ch.mix(trimgalore_ch).collect())
+    trimmed_fastqc_ch = FASTQC(trimgalore_ch)
+    MULTIQC(fastqc_ch.mix(trimmed_fastqc_ch).collect())
     
 }
