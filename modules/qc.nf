@@ -28,7 +28,7 @@ process TRIMGALORE {
     tuple val(sample_id), path(reads)
 
     output:
-    tuple val(sample_id), path("trimgalore_*/*fq.gz"), emit: fastq
+    tuple val(sample_id), path("trimgalore_*/*fq.gz")
 
     script:
     """
