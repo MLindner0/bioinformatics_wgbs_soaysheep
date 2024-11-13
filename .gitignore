@@ -1,0 +1,3 @@
+.nextflow*
+.nextflow/
+submission_logs/
