@@ -59,7 +59,7 @@ process TRIMGALORE {
     script:
     """
     mkdir trimgalore_${sample_id}_logs
-    trim_galore --2colour 20 -j 8 --paired --gzip -o fastqc_${sample_id}_logs ${reads}
+    trim_galore --2colour 20 -j 8 --paired --gzip -o trimgalore_${sample_id}_logs ${reads}
     """
 }
 
