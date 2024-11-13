@@ -19,7 +19,7 @@ log.info """\
 
 include { FASTQC as FASTQC } from './modules/qc.nf'
 include { FASTQC as FASTQC_TRIMMED } from './modules/qc.nf'
-include { TRIM_GALORE as TRIM_GALORE } from './modules/qc.nf'
+include { TRIMGALORE as TRIMGALORE } from './modules/qc.nf'
 include { MULTIQC as MULTIQC } from './modules/qc.nf'
 
 workflow {
