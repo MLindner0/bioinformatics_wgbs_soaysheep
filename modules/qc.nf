@@ -15,6 +15,23 @@ process FASTQC {
     """
 }
 
+process FASTQCTRIMM {
+    tag "FASTQC on $sample_id"
+    memory { 250.MB * task.cpus }
+
+    input:
+    tuple val(sample_id), path(reads)
+
+    output:
+    path "fastqc_trimm_${sample_id}_logs"
+
+    script:
+    """
+    mkdir fastqc_trimm_${sample_id}_logs
+    fastqc -o fastqc_trimm_${sample_id}_logs -f fastq -q ${reads}
+    """
+}
+
 process TRIMGALORE {
     tag "TRIM_GALORE on $sample_id"
     

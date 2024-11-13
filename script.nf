@@ -18,7 +18,7 @@ log.info """\
     .stripIndent()
 
 include { FASTQC as FASTQC } from './modules/qc.nf'
-include { FASTQC as FASTQC_TRIMMED } from './modules/qc.nf'
+include { FASTQCTRIMM as FASTQCTRIMM } from './modules/qc.nf'
 include { TRIMGALORE as TRIMGALORE } from './modules/qc.nf'
 include { MULTIQC as MULTIQC } from './modules/qc.nf'
 
@@ -29,7 +29,7 @@ workflow {
 
     fastqc_ch = FASTQC(read_pairs_ch)
     trimgalore_ch = TRIMGALORE(read_pairs_ch)
-    trimmed_fastqc_ch = FASTQC_TRIMMED(trimgalore_ch)
+    trimmed_fastqc_ch = FASTQCTRIMM(trimgalore_ch)
     MULTIQC(fastqc_ch.mix(trimmed_fastqc_ch).collect())
     
 }
