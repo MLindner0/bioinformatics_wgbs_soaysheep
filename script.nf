@@ -31,11 +31,21 @@ workflow {
         .fromFilePairs(params.reads, checkIfExists: true)
         .set { read_pairs_ch }
 
-    fastqc_ch = FASTQC(read_pairs_ch)
-    trimgalore_ch = TRIMGALORE(read_pairs_ch)
-    trimmed_fastqc_ch = FASTQCTRIMM(trimgalore_ch)
+    FASTQC(read_pairs_ch)
+    FASTQC.out.view { "fastqc: $it" }
+
+    TRIMGALORE(read_pairs_ch)
+    TRIMGALORE.out.view { "trimming: $it" }
+
+    trimgalore_ch = TRIMGALORE.out
+    FASTQCTRIMM(trimgalore_ch)
+    FASTQCTRIMM.out.view { "fastqc_trimm: $it" }
+
+    fastqc_ch = FASTQC.out
+    trimmed_fastqc_ch = FASTQCTRIMM.out
     MULTIQC(fastqc_ch.mix(trimmed_fastqc_ch).collect())
 
-    align_ch = ALIGN(trimgalore_ch)
-    align_ch.view()
+    ALIGN(trimgalore_ch)
+    ALIGN.out.bam.view { "align.bam: $it" }
+    ALIGN.out.report.view { "align.rep: $it" }
 }
