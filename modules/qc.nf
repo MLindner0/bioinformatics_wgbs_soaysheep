@@ -38,7 +38,7 @@ process TRIMGALORE {
     memory { 8.GB * task.attempt }
     time { 8.hour * task.attempt }
     
-    errorStrategy { 'retry' }
+    errorStrategy 'retry'
     maxRetries 3
 
     input:

@@ -1,10 +1,10 @@
 process ALIGN {
     tag "ALIGN on $sample_id"
     
-    memory { 30.GB * task.attempt }
+    memory { 100.GB * task.attempt }
     time { 16.hour * task.attempt }
     
-    errorStrategy { 'retry' }
+    errorStrategy 'retry'
     maxRetries 3
 
     input:
