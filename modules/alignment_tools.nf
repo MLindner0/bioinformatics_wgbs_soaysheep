@@ -1,11 +1,5 @@
 process SAMTOOLSSAM {
     tag "SAMTOOLSSAM on $sample_id"
-    
-    memory { 5.GB * task.attempt }
-    time { 5.hour * task.attempt }
-    
-    errorStrategy 'retry'
-    maxRetries 2
 
     input:
     tuple val(sample_id), path(alignment)
@@ -23,12 +17,6 @@ process SAMTOOLSSAM {
 
 process SAMTOOLSCOOR {
     tag "SAMTOOLSCOOR on $sample_id"
-    
-    memory { 5.GB * task.attempt }
-    time { 5.hour * task.attempt }
-    
-    errorStrategy 'retry'
-    maxRetries 2
 
     input:
     tuple val(sample_id), path(alignment)
