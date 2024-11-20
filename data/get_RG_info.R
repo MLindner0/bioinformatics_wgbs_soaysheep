@@ -31,6 +31,15 @@ filenamedata <- NULL
 for(f in 1:length(filenames)) {
   elements <- str_split_fixed(filenames[f],"_",4)
     # split filename into elements (separated by "_")
-
+  
+  temp <- data.frame(nextflow_id=paste(elements[,1], elements[,2], elements[,3], sep="_"), sample_ref=elements[,1], adapter_seq=elements[,2], lane=elements[,3])
+  filenamedata <- rbind(filenamedata, temp)
 
 }
+
+filenamedata$batch <- "first-batch"
+    # add batch info
+
+write.csv(filenamedata, paste(pipeline_data, "RG.info.csv", sep="/"), row.names=FALSE, quote=FALSE)
+
+
