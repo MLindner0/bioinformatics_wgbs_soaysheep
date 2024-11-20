@@ -1,37 +1,37 @@
 process FASTQC {
-    tag "FASTQC on $sample_run"
+    tag "FASTQC on $sample_id"
 
     input:
-    tuple val(sample_run), path(reads)
+    tuple val(sample_id), path(reads)
 
     output:
-    path "fastqc_${sample_run}_logs"
+    path "fastqc_${sample_id}_logs"
 
     script:
     """
-    mkdir fastqc_${sample_run}_logs
-    fastqc -o fastqc_${sample_run}_logs -f fastq -q ${reads}
+    mkdir fastqc_${sample_id}_logs
+    fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads}
     """
 }
 
 process FASTQCTRIMM {
-    tag "FASTQC on $sample_run"
+    tag "FASTQC on $sample_id"
 
     input:
-    tuple val(sample_run), path(reads)
+    tuple val(sample_id), path(reads)
 
     output:
-    path "fastqc_trimm_${sample_run}_logs"
+    path "fastqc_trimm_${sample_id}_logs"
 
     script:
     """
-    mkdir fastqc_trimm_${sample_run}_logs
-    fastqc -o fastqc_trimm_${sample_run}_logs -f fastq -q ${reads}
+    mkdir fastqc_trimm_${sample_id}_logs
+    fastqc -o fastqc_trimm_${sample_id}_logs -f fastq -q ${reads}
     """
 }
 
 process TRIMGALORE {
-    tag "TRIM_GALORE on $sample_run"
+    tag "TRIM_GALORE on $sample_id"
     
     memory { 1.GB * task.attempt }
     time { 3.hour * task.attempt }
@@ -40,15 +40,15 @@ process TRIMGALORE {
     maxRetries 2
 
     input:
-    tuple val(sample_run), path(reads)
+    tuple val(sample_id), path(reads)
 
     output:
-    tuple val(sample_run), path("trimgalore_*/*fq.gz")
+    tuple val(sample_id), path("trimgalore_*/*fq.gz")
 
     script:
     """
-    mkdir trimgalore_${sample_run}_logs
-    trim_galore --2colour 20 -j 8 --paired --gzip -o trimgalore_${sample_run}_logs ${reads}
+    mkdir trimgalore_${sample_id}_logs
+    trim_galore --2colour 20 -j 8 --paired --gzip -o trimgalore_${sample_id}_logs ${reads}
     """
 }
 
