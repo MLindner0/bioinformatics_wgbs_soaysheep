@@ -25,17 +25,11 @@ process ALIGN {
 process DEDUP {
     tag "DEDUP on $sample_id"
     
-    memory { 10.GB * task.attempt }
-    time { 10.hour * task.attempt }
-    
-    errorStrategy 'retry'
-    maxRetries 2
-
     input:
     tuple val(sample_id), path(alignment)
 
     output:
-    tuple val(sample_id), path("align_${sample_id}_logs/${sample_id}.deduplicated.bam")
+    tuple val(sample_id), path("dedup_${sample_id}_logs/${sample_id}.deduplicated.bam")
 
     script:
     """
