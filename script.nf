@@ -25,6 +25,10 @@ include { TRIMGALORE as TRIMGALORE } from './modules/qc.nf'
 include { MULTIQC as MULTIQC } from './modules/qc.nf'
 
 include { ALIGN as ALIGN } from './modules/bismark.nf'
+include { DEDUP as DEDUP } from './modules/bismark.nf'
+
+include { SAMTOOLSSAM as SAMTOOLSSAM } from './modules/alignment_tools.nf'
+include { SAMTOOLSCOOR as SAMTOOLSCOOR } from './modules/alignment_tools.nf'
 
 workflow {
     Channel
@@ -48,4 +52,16 @@ workflow {
     ALIGN(trimgalore_ch)
     ALIGN.out.bam.view { "align.bam: $it" }
     ALIGN.out.report.view { "align.rep: $it" }
+
+    first_align_ch = ALIGN.out.bam
+    SAMTOOLSSAM(first_align_ch)
+    SAMTOOLSSAM.out.view { "samtools_sam: $it" }
+
+    sam_align_ch = SAMTOOLSSAM.out
+    DEDUP(sam_align_ch)
+    DEDUP.out.view { "dedup: $it" }
+
+    dedup_align_ch = DEDUP.out
+    SAMTOOLSCOOR(dedup_align_ch)
+    SAMTOOLSCOOR.out.view { "samtools_coor: $it" }
 }
