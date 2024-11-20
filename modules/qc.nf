@@ -1,6 +1,5 @@
 process FASTQC {
     tag "FASTQC on $sample_id"
-    memory { 250.MB * task.cpus }
 
     input:
     tuple val(sample_id), path(reads)
@@ -17,7 +16,6 @@ process FASTQC {
 
 process FASTQCTRIMM {
     tag "FASTQC on $sample_id"
-    memory { 250.MB * task.cpus }
 
     input:
     tuple val(sample_id), path(reads)
@@ -35,11 +33,11 @@ process FASTQCTRIMM {
 process TRIMGALORE {
     tag "TRIM_GALORE on $sample_id"
     
-    memory { 8.GB * task.attempt }
-    time { 8.hour * task.attempt }
+    memory { 1.GB * task.attempt }
+    time { 3.hour * task.attempt }
     
     errorStrategy 'retry'
-    maxRetries 3
+    maxRetries 2
 
     input:
     tuple val(sample_id), path(reads)
