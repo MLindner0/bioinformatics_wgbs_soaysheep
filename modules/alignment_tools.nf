@@ -33,7 +33,7 @@ process SAMTOOLSCOOR {
 }
 
 process PICARDRG {
-    tag "SAMTOOLSCOOR on $sample_id"
+    tag "PICARDRG on $sample_id"
 
     input:
     tuple val(sample_id), val(sample_ref), val(lane), val(batch), path(alignment)
