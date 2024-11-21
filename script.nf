@@ -32,6 +32,7 @@ include { DEDUP as DEDUP } from './modules/bismark.nf'
 
 include { SAMTOOLSSAM as SAMTOOLSSAM } from './modules/alignment_tools.nf'
 include { SAMTOOLSCOOR as SAMTOOLSCOOR } from './modules/alignment_tools.nf'
+include { PICARDRG as PICARDRG } from './modules/alignment_tools.nf'
 
 /*
 * define workflow
@@ -104,6 +105,7 @@ workflow {
     * 1 - reformat tuple from SAMTOOLSCOOR.out --> rg_file_ch
     * 2 - read read group information and format --> rg_info_ch
     * 3 - combine and format file and read group channles --> add_rg_input_ch
+    * 4 - add readgroups
     */
     SAMTOOLSCOOR.out
         .map { sample, file -> [sample, file]}
@@ -117,5 +119,8 @@ workflow {
 
     rg_file_ch.join(rg_meta_ch)
         .map { sample, file, sample_ref, lane, batch -> [sample, sample_ref, lane, batch, [file]] }
-        .view()
+        .set { add_rg_input_ch }
+    
+    PICARDRG(add_rg_input_ch)
+    PICARDRG.out.view { "picard_RG: $it" }
 }
