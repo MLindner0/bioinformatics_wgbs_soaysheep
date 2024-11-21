@@ -113,9 +113,9 @@ workflow {
         .fromPath(params.rginfo, checkIfExists: true)
         .splitCsv( header: true )
         .map { row -> [row.nextflow_id, row.sample_ref, row.lane, row.batch] }
-        .set { rg_file_ch }
+        .set { rg_meta_ch }
 
-    rg_file_ch.join(rg_file_ch)
+    rg_file_ch.join(rg_meta_ch)
         .map { sample, file, sample_ref, lane, batch -> [sample, sample_ref, lane, batch, [file]] }
         .view()
 }
