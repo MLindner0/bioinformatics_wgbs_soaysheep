@@ -135,8 +135,7 @@ workflow {
     *       --> merge_input_ch
     */
     PICARDRG.out
-        .fromFilePairs(params.reads, checkIfExists: true)
-        .map { sample, files -> [sample.tokenize('_').get(0), files[0]]}
+        .map { sample, file -> [sample.tokenize('_').get(0), file]}
         .groupTuple()
         .view()
 }
