@@ -45,6 +45,6 @@ process PICARDRG {
     """
     mkdir align_RG_${sample_id}_logs
     mkdir align_RG_${sample_id}_logs/temp
-    picard -Xmx4096m AddOrReplaceReadGroups I=${alignment} O=align_RG_${sample_id}_logs/${sample_id}.deduplicated.withRG.bam TMP_DIR=align_RG_${sample_id}_logs/temp ID=${batch}.${lane} LB=NEB_EM-Seq PL=illumina PU=${batch}.${lane} SM=${sample_ref} CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT SORT_ORDER=queryname
+    java -Xmx4096m -jar picard.jar AddOrReplaceReadGroups I=${alignment} O=align_RG_${sample_id}_logs/${sample_id}.deduplicated.withRG.bam TMP_DIR=align_RG_${sample_id}_logs/temp ID=${batch}.${lane} LB=NEB_EM-Seq PL=illumina PU=${batch}.${lane} SM=${sample_ref} CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT SORT_ORDER=queryname
     """
 }
