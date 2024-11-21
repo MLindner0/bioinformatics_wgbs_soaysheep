@@ -106,7 +106,7 @@ workflow {
     * 3 - combine and format file and read group channles --> add_rg_input_ch
     */
     SAMTOOLSCOOR.out
-        ..map { sample, file -> [sample, file]}
+        .map { sample, file -> [sample, file]}
         .set { rg_file_ch }
     
     Channel
