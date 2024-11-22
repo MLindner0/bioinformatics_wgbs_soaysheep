@@ -21,6 +21,10 @@ log.info """\
 
 /*
 * load processes from modules
+* 1 - QC processes
+* 2 - bismark steps (alignment, deduplication, methylation calling)
+*   note: genome already prepared (in silico bisulfite converted)
+* 3 - alignment tools
 */
 include { FASTQC as FASTQC } from './modules/qc.nf'
 include { FASTQCTRIMM as FASTQCTRIMM } from './modules/qc.nf'
@@ -33,6 +37,7 @@ include { DEDUP as DEDUP } from './modules/bismark.nf'
 include { SAMTOOLSSAM as SAMTOOLSSAM } from './modules/alignment_tools.nf'
 include { SAMTOOLSCOOR as SAMTOOLSCOOR } from './modules/alignment_tools.nf'
 include { PICARDRG as PICARDRG } from './modules/alignment_tools.nf'
+include { PICARDMERGE as PICARDMERGE } from './modules/alignment_tools.nf'
 
 /*
 * define workflow
@@ -137,5 +142,8 @@ workflow {
     PICARDRG.out
         .map { sample, file -> [sample.tokenize('_').get(0), file]}
         .groupTuple()
-        .view()
+        .set { merge_align_input_ch }
+
+    PICARDMERGE(merge_align_input_ch)
+    PICARDMERGE.out.view { "picard_merge: $it" }
 }
