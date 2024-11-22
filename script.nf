@@ -7,13 +7,15 @@ params.reads = "${params.project}/raw_data_trimmed/001-1_*_{R1,R2}.fastq.gz"
 params.readsdir = "${params.project}/raw_data_trimmed"
 params.genome = "/mnt/parscratch/users/bi1ml/public/genomes/ARS-UI_Ramb_v2.0/GCF_016772045.1"
 params.rginfo = "/users/bi1ml/pipelines/next_wgbs/data/RG.info.test.csv"
+params.stagedir = "/users/bi1ml/public/methylated_soay/soay_wgbs_full_data_set_sep2024/bioinformatics/stage"
 
 log.info """\
     W G B S - N F   P I P E L I N E
     ===============================
     workdir      : $workDir
-    reads        : ${params.readsdir}
     projectdir   : ${params.project}
+    stagedir     : ${params.stagedir}
+    reads        : ${params.readsdir}   
     QCout        : ${params.qcdir}
     genomedir    : ${params.genome}
     """
@@ -33,6 +35,7 @@ include { MULTIQC as MULTIQC } from './modules/qc.nf'
 
 include { ALIGN as ALIGN } from './modules/bismark.nf'
 include { DEDUP as DEDUP } from './modules/bismark.nf'
+include { METHYLATION as METHYLATION } from './modules/bismark.nf'
 
 include { SAMTOOLSSAM as SAMTOOLSSAM } from './modules/alignment_tools.nf'
 include { SAMTOOLSCOOR as SAMTOOLSCOOR } from './modules/alignment_tools.nf'
@@ -144,6 +147,16 @@ workflow {
         .groupTuple()
         .set { merge_align_input_ch }
 
+    /*
+    * merge alignments
+    */ 
     PICARDMERGE(merge_align_input_ch)
     PICARDMERGE.out.view { "picard_merge: $it" }
+
+    /*
+    * call methylation
+    */ 
+    merge_align_out_ch = PICARDMERGE.out
+    METHYLATION(merge_align_out_ch)
+    METHYLATION.out.view { "meth: $it" }
 }
