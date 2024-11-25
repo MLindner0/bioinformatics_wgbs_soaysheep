@@ -27,6 +27,7 @@ log.info """\
 * 2 - bismark steps (alignment, deduplication, methylation calling)
 *   note: genome already prepared (in silico bisulfite converted)
 * 3 - alignment tools
+* 4 - add ons
 */
 include { FASTQC as FASTQC } from './modules/qc.nf'
 include { FASTQCTRIMM as FASTQCTRIMM } from './modules/qc.nf'
@@ -45,6 +46,8 @@ include { SAMTOOLSSTATS as SAMTOOLSSTATS } from './modules/alignment_tools.nf'
 include { PICARDCOOR as PICARDCOOR } from './modules/alignment_tools.nf'
 include { SAMTOOLSDEPTH as SAMTOOLSDEPTH } from './modules/alignment_tools.nf'
 include { SAMTOOLSBREADTH as SAMTOOLSBREADTH } from './modules/alignment_tools.nf'
+
+include { BSCONVERSION as BSCONVERSION } from './modules/add_ons.nf'
 
 /*
 * define workflow
@@ -194,4 +197,11 @@ workflow {
     cov_thresh = ['2', '4', '5', '6', '8', '10', '15', '20', '25', '30']
     SAMTOOLSBREADTH(cov_input_ch, cov_thresh)
     SAMTOOLSBREADTH.out.view { "cov_breadth: $it" }
+
+    /*
+    * 3 - get estimate of bisulfite conversion from bismark alignment report
+    */
+    align_report_ch = ALIGN.out.report
+    BSCONVERSION(align_report_ch)
+    BSCONVERSION.out.view { "bs_conversion: $it" }
 }
