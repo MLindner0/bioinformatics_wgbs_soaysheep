@@ -43,7 +43,8 @@ include { PICARDRG as PICARDRG } from './modules/alignment_tools.nf'
 include { PICARDMERGE as PICARDMERGE } from './modules/alignment_tools.nf'
 include { SAMTOOLSSTATS as SAMTOOLSSTATS } from './modules/alignment_tools.nf'
 include { PICARDCOOR as PICARDCOOR } from './modules/alignment_tools.nf'
-include { SAMTOOLSCOV as SAMTOOLSCOV } from './modules/alignment_tools.nf'
+include { SAMTOOLSDEPTH as SAMTOOLSDEPTH } from './modules/alignment_tools.nf'
+include { SAMTOOLSBREADTH as SAMTOOLSBREADTH } from './modules/alignment_tools.nf'
 
 /*
 * define workflow
@@ -186,9 +187,11 @@ workflow {
     PICARDCOOR(merge_align_out_ch)
     PICARDCOOR.out.view { "picard_coor: $it" }
 
-    cov_thresh = ['2', '4', '5', '6', '8', '10', '15', '20', '25', '30']
     cov_input_ch = PICARDCOOR.out
-    SAMTOOLSCOV(cov_input_ch, cov_thresh)
-    SAMTOOLSCOV.out.depth.view { "cov_depth: $it" }
-    SAMTOOLSCOV.out.breadth.view { "cov_breadth: $it" }
+    SAMTOOLSDEPTH(cov_input_ch)
+    SAMTOOLSDEPTH.out.view { "cov_depth: $it" }
+
+    cov_thresh = ['2', '4', '5', '6', '8', '10', '15', '20', '25', '30']
+    SAMTOOLSBREADTH(cov_input_ch, cov_thresh)
+    SAMTOOLSBREADTH.out.view { "cov_breadth: $it" }
 }

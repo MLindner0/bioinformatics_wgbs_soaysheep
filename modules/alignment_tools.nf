@@ -101,8 +101,25 @@ process PICARDCOOR {
     """
 }
 
-process SAMTOOLSCOV {
-    tag "SAMTOOLSCOV on $sample_id"
+process SAMTOOLSDEPTH {
+    tag "SAMTOOLSDEPTH on $sample_id"
+    publishDir params.stagedir, mode: 'symlink'
+
+    input:
+    tuple val(sample_id), path(alignment)
+
+    output:
+    tuple val(sample_id), path("depth_${sample_id}_logs/${sample_id}.av_depth.txt")
+
+    script:
+    """
+    mkdir depth_${sample_id}_logs
+    samtools depth ${alignment} | awk '{sum+=\$3} END { print "Average = ",sum/NR}' 1> depth_${sample_id}_logs/${sample_id}.av_depth.txt
+    """
+}
+
+process SAMTOOLSBREADTH {
+    tag "SAMTOOLSBREADTH on $sample_id"
     publishDir params.stagedir, mode: 'symlink'
 
     input:
@@ -110,13 +127,11 @@ process SAMTOOLSCOV {
     each cov
 
     output:
-    tuple val(sample_id), path("cov_${sample_id}_logs/${sample_id}.av_depth.txt"), emit: depth
-    tuple val(sample_id), path("cov_${sample_id}_logs/${sample_id}.breadth_${cov}x.txt"), emit: breadth
+    tuple val(sample_id), path("breadth_${sample_id}_logs/${sample_id}.breadth_${cov}x.txt")
 
     script:
     """
-    mkdir cov_${sample_id}_logs
-    samtools depth ${alignment} | awk '{sum+=\$3} END { print "Average = ",sum/NR}' 1> cov_${sample_id}_logs/${sample_id}.av_depth.txt
-    samtools mpileup ${alignment} | awk -v X="${cov}" '\$4>=X' | wc -l 1> cov_${sample_id}_logs/${sample_id}.breadth_${cov}x.txt
+    mkdir breadth_${sample_id}_logs
+    samtools mpileup ${alignment} | awk -v X="${cov}" '\$4>=X' | wc -l 1> breadth_${sample_id}_logs/${sample_id}.breadth_${cov}x.txt
     """
 }
