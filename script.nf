@@ -44,6 +44,7 @@ include { PICARDMERGE as PICARDMERGE } from './modules/alignment_tools.nf'
 include { SAMTOOLSSTATS as SAMTOOLSSTATS } from './modules/alignment_tools.nf'
 include { PICARDCOOR as PICARDCOOR } from './modules/alignment_tools.nf'
 include { SAMTOOLSCOV as SAMTOOLSCOV } from './modules/alignment_tools.nf'
+
 /*
 * define workflow
 */
