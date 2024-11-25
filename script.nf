@@ -189,5 +189,6 @@ workflow {
     cov_thresh = ['2', '4', '5', '6', '8', '10', '15', '20', '25', '30']
     cov_input_ch = PICARDCOOR.out
     SAMTOOLSCOV(cov_input_ch, cov_thresh)
-    SAMTOOLSCOV.out.view { "cov: $it" }
+    SAMTOOLSCOVLIGN.out.depth.view { "cov_depth: $it" }
+    SAMTOOLSCOV.out.breadth.view { "cov_breadth: $it" }
 }
