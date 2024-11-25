@@ -186,8 +186,8 @@ workflow {
     PICARDCOOR(merge_align_out_ch)
     PICARDCOOR.out.view { "picard_coor: $it" }
 
-    cov_thresh = ['2', '4', '5', '6', '8' '10', '15', '20', '25', '30']
+    cov_thresh = ['2', '4', '5', '6', '8', '10', '15', '20', '25', '30']
     cov_input_ch = PICARDCOOR.out
-    SAMTOOLSCOV(merge_align_out_ch, cov_thresh)
+    SAMTOOLSCOV(cov_input_ch, cov_thresh)
     SAMTOOLSCOV.out.view { "cov: $it" }
 }
