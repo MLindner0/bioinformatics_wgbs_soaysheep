@@ -65,3 +65,40 @@ process PICARDMERGE {
     picard -Xmx4096m MergeSamFiles I=${alignments[0]} I=${alignments[1]} I=${alignments[2]} O=align_merge_${sample_id}_logs/${sample_id}.merged.bam TMP_DIR=align_merge_${sample_id}_logs/temp SORT_ORDER=queryname
     """
 }
+
+process SAMTOOLSSTATS {
+    tag "SAMTOOLSSTATS on $sample_id"
+    publishDir params.stagedir, mode: 'symlink'
+
+    input:
+    tuple val(sample_id), path(alignment)
+
+    output:
+    tuple val(sample_id), path("align_stats_${sample_id}_logs/${sample_id}.samtools_stats.txt")
+
+    script:
+    """
+    mkdir align_stats_${sample_id}_logs
+    samtools stats ${alignment} 1> align_stats_${sample_id}_logs/${sample_id}.samtools_stats_temp.txt
+    cat align_stats_${sample_id}_logs/${sample_id}.samtools_stats_temp.txt | grep ^SN | awk -F '\t' -v OFS='\t' '{{print $2,$3}}' 1> align_stats_${sample_id}_logs/${sample_id}.samtools_stats.txt
+    """
+}
+
+process PICARDCOOR {
+    tag "PICARDCOOR on $sample_id"
+
+    input:
+    tuple val(sample_id), path(alignment)
+
+    output:
+    tuple val(sample_id), path("picard_${sample_id}_logs/${sample_id}.merged.coordinates.bam")
+
+    script:
+    """
+    mkdir picard_${sample_id}_logs
+    mkdir picard_${sample_id}_logs/temp
+    picard -Xmx4096m SortSam I=${alignment} O=picard_${sample_id}_logs/${sample_id}.merged.coordinates.bam SORT_ORDER=coordinate TMP_DIR=picard_${sample_id}_logs/temp
+    """
+}
+
+

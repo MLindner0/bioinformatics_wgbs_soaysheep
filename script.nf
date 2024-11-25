@@ -41,6 +41,8 @@ include { SAMTOOLSSAM as SAMTOOLSSAM } from './modules/alignment_tools.nf'
 include { SAMTOOLSCOOR as SAMTOOLSCOOR } from './modules/alignment_tools.nf'
 include { PICARDRG as PICARDRG } from './modules/alignment_tools.nf'
 include { PICARDMERGE as PICARDMERGE } from './modules/alignment_tools.nf'
+include { SAMTOOLSSTATS as SAMTOOLSSTATS } from './modules/alignment_tools.nf'
+include { PICARDCOOR as PICARDCOOR } from './modules/alignment_tools.nf'
 
 /*
 * define workflow
@@ -48,26 +50,30 @@ include { PICARDMERGE as PICARDMERGE } from './modules/alignment_tools.nf'
 workflow {
     
     /*
-    * define read pairs
+    * --- MAIN STEPS ---
+    *
+    * define input: read pairs
     */
     Channel
         .fromFilePairs(params.reads, checkIfExists: true)
         .set { read_pairs_ch }
 
     /*
-    * fastqc on read pairs (already trimmed by Liverpool)
+    * --- quality control & read trimming ---
+    *
+    * fastqc on read pairs (already trimmed using cutadapt by Liverpool)
     */
     FASTQC(read_pairs_ch)
     FASTQC.out.view { "fastqc: $it" }
 
     /*
-    * trimm read pairs
+    * redo trimming of read pairs using trimgalore
     */
     TRIMGALORE(read_pairs_ch)
     TRIMGALORE.out.view { "trimming: $it" }
 
     /*
-    * fastqc on trimmed read pairs
+    * redo fastqc on "trimmed" read pairs
     */
     trimgalore_ch = TRIMGALORE.out
     FASTQCTRIMM(trimgalore_ch)
@@ -81,6 +87,8 @@ workflow {
     MULTIQC(fastqc_ch.mix(trimmed_fastqc_ch).collect())
 
     /*
+    * --- alignment & alignment formatting ---
+    *
     * bismark alignment
     */
     ALIGN(trimgalore_ch)
@@ -154,9 +162,25 @@ workflow {
     PICARDMERGE.out.view { "picard_merge: $it" }
 
     /*
+    * --- methylation calling ---
+    *
     * call methylation
     */ 
     merge_align_out_ch = PICARDMERGE.out
     METHYLATION(merge_align_out_ch)
     METHYLATION.out.view { "meth: $it" }
+
+    /*
+    * --- EXTRA STEPS ---
+    *
+    * 1 - samtools alignment stats (samtools)
+    */ 
+    SAMTOOLSSTATS(merge_align_out_ch)
+    SAMTOOLSSTATS.out.view { "samtools_stats: $it" }
+
+    /*
+    * 2 - sort alignmet & get genome coverage (depth and breath)
+    */ 
+    PICARDCOOR(merge_align_out_ch)
+    PICARDCOOR.out.view { "picard_coor: $it" }
 }

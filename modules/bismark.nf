@@ -42,6 +42,12 @@ process METHYLATION {
     tag "METHYLATION on $sample_id"
     publishDir params.stagedir, mode: 'symlink'
 
+    memory { 8.GB * task.attempt }
+    time { 8.hour * task.attempt }
+    
+    errorStrategy 'retry'
+    maxRetries 2
+
     input:
     tuple val(sample_id), path(alignment)
 
