@@ -80,7 +80,7 @@ process SAMTOOLSSTATS {
     """
     mkdir align_stats_${sample_id}_logs
     samtools stats ${alignment} 1> align_stats_${sample_id}_logs/${sample_id}.samtools_stats_temp.txt
-    cat align_stats_${sample_id}_logs/${sample_id}.samtools_stats_temp.txt | grep ^SN | awk -F '\t' -v OFS='\t' '{{print $2,$3}}' 1> align_stats_${sample_id}_logs/${sample_id}.samtools_stats.txt
+    cat align_stats_${sample_id}_logs/${sample_id}.samtools_stats_temp.txt | grep ^SN | awk -F '\t' -v OFS='\t' '{print $2,$3}' 1> align_stats_${sample_id}_logs/${sample_id}.samtools_stats.txt
     """
 }
 
