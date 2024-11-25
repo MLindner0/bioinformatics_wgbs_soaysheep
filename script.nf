@@ -43,7 +43,7 @@ include { PICARDRG as PICARDRG } from './modules/alignment_tools.nf'
 include { PICARDMERGE as PICARDMERGE } from './modules/alignment_tools.nf'
 include { SAMTOOLSSTATS as SAMTOOLSSTATS } from './modules/alignment_tools.nf'
 include { PICARDCOOR as PICARDCOOR } from './modules/alignment_tools.nf'
-
+include { SAMTOOLSCOV as SAMTOOLSCOV } from './modules/alignment_tools.nf'
 /*
 * define workflow
 */
@@ -179,8 +179,14 @@ workflow {
     SAMTOOLSSTATS.out.view { "samtools_stats: $it" }
 
     /*
-    * 2 - sort alignmet & get genome coverage (depth and breath)
+    * 2 - sort alignmet & get genome coverage (average depth) and genome breadth
+    *   genome breadth is estimates for various coverage thresholds
     */ 
     PICARDCOOR(merge_align_out_ch)
     PICARDCOOR.out.view { "picard_coor: $it" }
+
+    cov_thresh = ['2', '4', '5', '6', '8' '10', '15', '20', '25', '30']
+    cov_input_ch = PICARDCOOR.out
+    SAMTOOLSCOV(merge_align_out_ch, cov_thresh)
+    SAMTOOLSCOV.out.view { "cov: $it" }
 }

@@ -101,4 +101,22 @@ process PICARDCOOR {
     """
 }
 
+process SAMTOOLSCOV {
+    tag "SAMTOOLSCOV on $sample_id"
+    publishDir params.stagedir, mode: 'symlink'
 
+    input:
+    tuple val(sample_id), path(alignment)
+    each cov
+
+    output:
+    tuple val(sample_id), path("cov_${sample_id}_logs/${sample_id}.av_depth.txt"), emit: depth
+    tuple val(sample_id), path("cov_${sample_id}_logs/${sample_id}.breadth_${cov}x.txt"), emit: breadth
+
+    script:
+    """
+    mkdir cov_${sample_id}_logs
+    samtools depth ${alignment} | awk '{sum+=\$3} END { print "Average = ",sum/NR}' 1> cov_${sample_id}_logs/${sample_id}.av_depth.txt
+    samtools mpileup ${alignment} | awk -v X="${cov}" '\$4>=X' | wc -l 1> cov_${sample_id}_logs/${sample_id}.breadth_${cov}x.txt
+    """
+}
