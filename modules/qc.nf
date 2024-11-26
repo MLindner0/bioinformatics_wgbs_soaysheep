@@ -53,16 +53,17 @@ process TRIMGALORE {
 }
 
 process MULTIQC {
-    publishDir params.qcdir, mode:'copy'
+    publishDir params.stagedir, mode:'symlink'
 
     input:
     path '*'
 
     output:
-    path 'multiqc_report.html'
+    path "multiqc_report_${params.pipelinebatch}.html"
+    path "multiqc_data_${params.pipelinebatch}/multiqc_fastqc.txt"
 
     script:
     """
-    multiqc .
+    multiqc . -n multiqc_report_${params.pipelinebatch}.html -o multiqc_data_${params.pipelinebatch}
     """
 }
