@@ -69,38 +69,36 @@ workflow {
         .fromPath(params.readsfile, checkIfExists: true)
         .splitCsv( header: true )
         .map { row -> [row.nextflow_id, [row.file_R1, row.file_R2]] }
-        .view()
-    /*
         .set { read_pairs_ch }
 
-    * --- quality control & read trimming ---
+    /* --- quality control & read trimming ---
     *
     * fastqc on read pairs (already trimmed using cutadapt by Liverpool)
-    *
+    */
     FASTQC(read_pairs_ch)
     FASTQC.out.view { "fastqc: $it" }
 
-    *
+    /*
     * redo trimming of read pairs using trimgalore
-    *
+    */
     TRIMGALORE(read_pairs_ch)
     TRIMGALORE.out.view { "trimming: $it" }
 
-    *
+    /*
     * redo fastqc on "trimmed" read pairs
-    *
+    */
     trimgalore_ch = TRIMGALORE.out
     FASTQCTRIMM(trimgalore_ch)
     FASTQCTRIMM.out.view { "fastqc_trimm: $it" }
 
-    *
+    /*
     * create multiqc report for 'raw' and trimmed read pairs
-    *
+    */
     fastqc_ch = FASTQC.out
     trimmed_fastqc_ch = FASTQCTRIMM.out
     MULTIQC(fastqc_ch.mix(trimmed_fastqc_ch).collect())
 
-    *
+    /*
     * --- alignment & alignment formatting ---
     *
     * bismark alignment
@@ -139,13 +137,11 @@ workflow {
     SAMTOOLSCOOR.out
         .map { sample, file -> [sample, file]}
         .set { rg_file_ch }
-    */
+
     Channel
         .fromPath(params.rginfofile, checkIfExists: true)
         .splitCsv( header: true )
         .map { row -> [row.nextflow_id, row.sample_ref, row.lane, row.batch] }
-        .view()
-    /*
         .set { rg_meta_ch }
 
     rg_file_ch.join(rg_meta_ch)
