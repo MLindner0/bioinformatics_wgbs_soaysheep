@@ -66,9 +66,6 @@ workflow {
     * define input: read pairs
     */
     Channel
-        .fromFilePairs(params.reads, checkIfExists: true)
-        .set { read_pairs_ch }
-    Channel
         .fromPath(params.readsfile, checkIfExists: true)
         .splitCsv( header: true )
         .map { row -> [row.nextflow_id, [row.file.R1, row.file.R2]] }
@@ -144,7 +141,7 @@ workflow {
         .set { rg_file_ch }
     */
     Channel
-        .fromPath(params.rginfo, checkIfExists: true)
+        .fromPath(params.rginfofile, checkIfExists: true)
         .splitCsv( header: true )
         .map { row -> [row.nextflow_id, row.sample_ref, row.lane, row.batch] }
         .view()
