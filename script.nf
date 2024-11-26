@@ -218,4 +218,5 @@ workflow {
     align_report_ch = ALIGN.out.report
     BSCONVERSION(align_report_ch)
     BSCONVERSION.out.view { "bs_conversion: $it" }
+    */
 }
