@@ -33,7 +33,7 @@ for(f in 1:length(filenames.R1)) {
   elements.R2 <- str_split_fixed(filenames.R2[f],"_",4)
     # split filename into elements (separated by "_")
 
-  if(elements[,1]==elements.R2[,1] & elements[,3]==elements.R2[,3]) temp <- data.frame(nextflow_id=paste(elements[,1], elements[,2], elements[,3], sep="_"), sample_ref=elements[,1], adapter_seq=elements[,2], lane=elements[,3], file.R1=paste(reads, filenames.R1[f], sep="/"), file.R2=paste(reads, filenames.R2[f], sep="/"))
+  if(elements[,1]==elements.R2[,1] & elements[,3]==elements.R2[,3]) temp <- data.frame(nextflow_id=paste(elements[,1], elements[,2], elements[,3], sep="_"), sample_ref=elements[,1], adapter_seq=elements[,2], lane=elements[,3], file_R1=paste(reads, filenames.R1[f], sep="/"), file_R2=paste(reads, filenames.R2[f], sep="/"))
     # combine elemnts into data frame row
 
   filenamedata <- rbind(filenamedata, temp)
@@ -45,7 +45,7 @@ filenamedata$batch <- "first-batch"
 
 
 # divide data into data frame for read pairs (1) & read group information (2)
-read_pairs <- filenamedata[,c("nextflow_id", "file.R1", "file.R2")]
+read_pairs <- filenamedata[,c("nextflow_id", "file_R1", "file_R2")]
 read_group_info <- filenamedata[,c("nextflow_id", "sample_ref", "adapter_seq", "lane", "batch")]
 
 

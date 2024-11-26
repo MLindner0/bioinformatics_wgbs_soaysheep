@@ -68,7 +68,7 @@ workflow {
     Channel
         .fromPath(params.readsfile, checkIfExists: true)
         .splitCsv( header: true )
-        .map { row -> [row.nextflow_id, [row.file.R1, row.file.R2]] }
+        .map { row -> [row.nextflow_id, [row.file_R1, row.file_R2]] }
         .view()
     /*
         .set { read_pairs_ch }
