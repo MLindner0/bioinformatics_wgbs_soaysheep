@@ -1,13 +1,13 @@
 /*
  * define pipeline input parameters
  */
-params.project = "/users/bi1ml/public/methylated_soay/soay_wgbs_full_data_set_sep2024"
+params.project = "/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024"
 params.qcdir = "${params.project}/bioinformatics/qc"
-params.reads = "${params.project}/raw_data_trimmed/001-1_*_{R1,R2}.fastq.gz"
-params.readsdir = "${params.project}/raw_data_trimmed"
-params.genome = "/mnt/parscratch/users/bi1ml/public/genomes/ARS-UI_Ramb_v2.0/GCF_016772045.1"
+params.reads = "${params.project}/data_first_batch/001-1_*_{R1,R2}.fastq.gz"
+params.readsdir = "${params.project}/data_first_batch"
+params.genome = "/users/bi1ml/public/genomes/ARS-UI_Ramb_v2.0/GCF_016772045.1"
 params.rginfo = "/users/bi1ml/pipelines/next_wgbs/data/RG.info.test.csv"
-params.stagedir = "/users/bi1ml/public/methylated_soay/soay_wgbs_full_data_set_sep2024/bioinformatics/stage"
+params.stagedir = "${params.project}/bioinformatics/stage"
 
 log.info """\
     W G B S - N F   P I P E L I N E
