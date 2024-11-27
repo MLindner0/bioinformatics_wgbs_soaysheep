@@ -102,38 +102,38 @@ workflow {
     * --- alignment & alignment formatting ---
     *
     * bismark alignment
-    *
+    */
     ALIGN(trimgalore_ch)
     ALIGN.out.bam.view { "align.bam: $it" }
     ALIGN.out.report.view { "align.rep: $it" }
 
-    *
+    /*
     * convert bismark alignment to .sam format (recommended for deduplication of wgbs data)
-    *
+    */
     first_align_ch = ALIGN.out.bam
     SAMTOOLSSAM(first_align_ch)
     SAMTOOLSSAM.out.view { "samtools_sam: $it" }
 
-    *
+    /*
     * deduplication
-    *
+    */
     sam_align_ch = SAMTOOLSSAM.out
     DEDUP(sam_align_ch)
     DEDUP.out.view { "dedup: $it" }
 
-    *
+    /*
     * sort alignments by coordinates
-    *  
+    */ 
     dedup_align_ch = DEDUP.out
     SAMTOOLSCOOR(dedup_align_ch)
     SAMTOOLSCOOR.out.view { "samtools_coor: $it" }
 
-    *
+    /*
     * prepare input chanel for adding read group information
     *   1 - reformat tuple from SAMTOOLSCOOR.out --> rg_file_ch
     *   2 - read read group information and format --> rg_info_ch
     *   3 - combine and format file and read group channles --> add_rg_input_ch
-    *
+    */
     SAMTOOLSCOOR.out
         .map { sample, file -> [sample, file]}
         .set { rg_file_ch }
@@ -148,32 +148,32 @@ workflow {
         .map { sample, file, sample_ref, lane, batch -> [sample, sample_ref, lane, batch, [file]] }
         .set { add_rg_input_ch }
     
-    *
+    /*
     * add read group information
-    *
+    */
     PICARDRG(add_rg_input_ch)
     PICARDRG.out.view { "picard_RG: $it" }
 
-    *
+    /*
     * prepare input chanel for mergin alignments
     *   each sample was sequenced on 3 runs
     *   now the three alignments for each samples are merged into one alignment
     *       change key in tuple from sample_run to sample
     *       group the three alignments for each samples based on the new key
     *       --> merge_input_ch
-    *
+    */
     PICARDRG.out
         .map { sample, file -> [sample.tokenize('_').get(0), file]}
         .groupTuple()
         .set { merge_align_input_ch }
 
-    *
+    /*
     * merge alignments
-    *
+    */
     PICARDMERGE(merge_align_input_ch)
     PICARDMERGE.out.view { "picard_merge: $it" }
 
-    *
+    /*
     * --- methylation calling ---
     *
     * call methylation
