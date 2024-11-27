@@ -33,8 +33,8 @@ process FASTQCTRIMM {
 process TRIMGALORE {
     tag "TRIM_GALORE on $sample_id"
     
-    memory { 5.GB * task.attempt }
-    time { 5.hour * task.attempt }
+    memory { 10.GB * task.attempt }
+    time { 8.hour * task.attempt }
     
     errorStrategy 'retry'
     maxRetries 2

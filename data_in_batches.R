@@ -55,7 +55,7 @@ read_group_info <- filenamedata[,c("nextflow_id", "sample_ref", "adapter_seq", "
 
 batch <- "1"
 
-write.csv(read_pairs[1:3,], paste(pipeline_path_main, paste("read_pairs_b1", batch, "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
-write.csv(read_group_info[1:3,], paste(pipeline_path_main, paste("read_group_info_b1", batch, "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
+write.csv(read_pairs[1:30,], paste(pipeline_path_main, paste("read_pairs_b1", batch, "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
+write.csv(read_group_info[1:30,], paste(pipeline_path_main, paste("read_group_info_b1", batch, "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
 
 
