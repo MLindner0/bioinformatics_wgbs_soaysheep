@@ -1,5 +1,6 @@
 process ALIGN {
     tag "ALIGN on $sample_id"
+    publishDir params.stagedir, mode:'symlink'
     
     memory { 80.GB * task.attempt }
     time { 20.hour * task.attempt }
