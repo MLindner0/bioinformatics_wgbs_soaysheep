@@ -59,8 +59,8 @@ process MULTIQC {
     path '*'
 
     output:
-    path "multiqc_report_${params.pipelinebatch}.html"
-    path "multiqc_data_${params.pipelinebatch}/multiqc_fastqc.txt"
+    path "multiqc_data_${params.pipelinebatch}/multiqc_report_${params.pipelinebatch}.html"
+    path "multiqc_data_${params.pipelinebatch}/multiqc_report_${params.pipelinebatch}_data/multiqc_fastqc.txt"
 
     script:
     """
