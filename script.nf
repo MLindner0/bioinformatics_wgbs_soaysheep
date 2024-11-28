@@ -6,7 +6,7 @@ params.seqbatch = "first_batch"
 params.pipelinebatch = "b1.1" 
 params.readsfile = "/users/bi1ml/pipelines/${params.seqbatch}_batches/read_pairs_${params.pipelinebatch}.csv"
 params.readsdir = "${params.project}/data_${params.seqbatch}"
-params.genome = "/users/bi1ml/public/genomes/ARS-UI_Ramb_v2.0/GCF_016772045.1"
+params.genome = "/mnt/parscratch/users/bi1ml/public/genomes/ARS-UI_Ramb_v2.0/GCF_016772045.1"
 params.rginfofile = "/users/bi1ml/pipelines/${params.seqbatch}_batches/read_group_info_${params.pipelinebatch}.csv"
 params.stagedir = "${params.project}/nextflow_pipeline/stage"
 
