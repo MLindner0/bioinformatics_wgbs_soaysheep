@@ -173,11 +173,11 @@ workflow {
     PICARDMERGE(merge_align_input_ch)
     PICARDMERGE.out.view { "picard_merge: $it" }
 
-    *
+    /*
     * --- methylation calling ---
     *
     * call methylation
-    *
+    */
     merge_align_out_ch = PICARDMERGE.out
     METHYLATION(merge_align_out_ch)
     METHYLATION.out.view { "meth: $it" }
