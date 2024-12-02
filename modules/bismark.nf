@@ -3,7 +3,7 @@ process ALIGN {
     publishDir params.stagedir, mode:'symlink'
     
     memory { 80.GB * task.attempt }
-    time { 20.hour * task.attempt }
+    time { 30.hour * task.attempt }
     
     errorStrategy 'retry'
     maxRetries 2
@@ -26,7 +26,7 @@ process ALIGN {
 process DEDUP {
     tag "DEDUP on $sample_id"
     
-    memory { 4.GB * task.attempt }
+    memory { 8.GB * task.attempt }
     time { 4.hour * task.attempt }
 
     errorStrategy 'retry'

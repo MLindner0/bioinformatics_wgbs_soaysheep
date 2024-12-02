@@ -173,7 +173,7 @@ workflow {
     PICARDMERGE(merge_align_input_ch)
     PICARDMERGE.out.view { "picard_merge: $it" }
 
-    /*
+    *
     * --- methylation calling ---
     *
     * call methylation
@@ -182,7 +182,7 @@ workflow {
     METHYLATION(merge_align_out_ch)
     METHYLATION.out.view { "meth: $it" }
 
-    *
+    /*
     * --- EXTRA STEPS ---
     *
     * 1 - samtools alignment stats (samtools)
