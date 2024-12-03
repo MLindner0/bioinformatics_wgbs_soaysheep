@@ -180,20 +180,21 @@ workflow {
     */
     merge_align_out_ch = PICARDMERGE.out
     METHYLATION(merge_align_out_ch)
-    METHYLATION.out.view { "meth: $it" }
+    METHYLATION.out.meth.view { "meth: $it" }
+    METHYLATION.out.mbias.view { "meth: $it" }
 
     /*
     * --- EXTRA STEPS ---
     *
     * 1 - samtools alignment stats (samtools)
-    *
+    */
     SAMTOOLSSTATS(merge_align_out_ch)
     SAMTOOLSSTATS.out.view { "samtools_stats: $it" }
 
-    *
+    /*
     * 2 - sort alignmet & get genome coverage (average depth) and genome breadth
     *   genome breadth is estimates for various coverage thresholds
-    *
+    */
     PICARDCOOR(merge_align_out_ch)
     PICARDCOOR.out.view { "picard_coor: $it" }
 
@@ -205,11 +206,10 @@ workflow {
     SAMTOOLSBREADTH(cov_input_ch, cov_thresh)
     SAMTOOLSBREADTH.out.view { "cov_breadth: $it" }
 
-    *
+    /*
     * 3 - get estimate of bisulfite conversion from bismark alignment report
-    *
+    */
     align_report_ch = ALIGN.out.report
     BSCONVERSION(align_report_ch)
     BSCONVERSION.out.view { "bs_conversion: $it" }
-    */
 }

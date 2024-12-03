@@ -59,11 +59,12 @@ process METHYLATION {
     tuple val(sample_id), path(alignment)
 
     output:
-    tuple val(sample_id), path("meth_${sample_id}_logs/${sample_id}.merged.M-bias.txt")
+    tuple val(sample_id), path("meth_${sample_id}_logs/${sample_id}.merged.bismark.cov.gz"), emit: meth
+    tuple val(sample_id), path("meth_${sample_id}_logs/${sample_id}.merged.M-bias.txt"), emit: mbias
 
     script:
     """
     mkdir meth_${sample_id}_logs
-    bismark_methylation_extractor -p --parallel 4 --no_overlap --scaffolds --mbias_only -o meth_${sample_id}_logs --genome_folder ${params.genome} ${alignment}
+    bismark_methylation_extractor -p --parallel 4 --no_overlap --report --bedGraph --scaffolds --cytosine_report --ignore 3 --ignore_r2 4 --ignore_3prime 4 --ignore_3prime_r2 3 -o meth_${sample_id}_logs --genome_folder ${params.genome} ${alignment}
     """
 }
