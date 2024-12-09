@@ -15,4 +15,4 @@ CONFIG=$2
 
 module load Nextflow/23.10.0
 
-nextflow -C ${CONFIG} run ${WORKFLOW}
+nextflow -C ${CONFIG} run ${WORKFLOW} --pipelinebatch "b1.2"

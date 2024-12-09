@@ -58,4 +58,12 @@ batch <- "1"
 write.csv(read_pairs[1:30,], paste(pipeline_path_main, paste("read_pairs_b1", batch, "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
 write.csv(read_group_info[1:30,], paste(pipeline_path_main, paste("read_group_info_b1", batch, "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
 
+batch <- 2:5
+start <- seq(31,391,120)
+end <- c(start[1:3]+119,nrow(read_pairs))
 
+for(i in 1:length(batch)) {
+  write.csv(read_pairs[start[i]:end[i],], paste(pipeline_path_main, paste("read_pairs_b1", batch[i], "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
+write.csv(read_group_info[start[i]:end[i],], paste(pipeline_path_main, paste("read_group_info_b1", batch[i], "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
+
+}
