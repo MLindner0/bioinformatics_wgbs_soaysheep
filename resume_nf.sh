@@ -12,7 +12,8 @@
 
 WORKFLOW=$1
 CONFIG=$2
+PIPBATCH=$3
 
 module load Nextflow/23.10.0
 
-nextflow -C ${CONFIG} run ${WORKFLOW} -resume
+nextflow -C ${CONFIG} run ${WORKFLOW} --pipelinebatch ${PIPBATCH} -resume
