@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=5GB
-#SBATCH --time=62:00:00
+#SBATCH --time=96:00:00
 #SBATCH --mail-user=m.lindner@sheffield.ac.uk
 #SBATCH --mail-type=all
 
