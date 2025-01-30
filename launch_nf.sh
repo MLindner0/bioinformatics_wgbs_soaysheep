@@ -4,7 +4,7 @@
 #SBATCH --output=submission_logs/slurm_trial_1.log
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=28
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=5GB
 #SBATCH --time=96:00:00
 #SBATCH --mail-user=m.lindner@sheffield.ac.uk
