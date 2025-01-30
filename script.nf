@@ -77,6 +77,7 @@ workflow {
         .splitCsv( header: true )
         .map { row -> [row.nextflow_id, [row.file_R1, row.file_R2]] }
         .view()
+}
 
     /* --- quality control & read trimming --- .set { read_pairs_ch }
     *
