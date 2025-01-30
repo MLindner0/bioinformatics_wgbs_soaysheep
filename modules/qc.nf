@@ -34,7 +34,7 @@ process TRIMGALORE {
     tag "TRIM_GALORE on $sample_id"
     
     memory { 10.GB * task.attempt }
-    time { 8.hour * task.attempt }
+    time { 16.hour * task.attempt }
     
     errorStrategy 'retry'
     maxRetries 2

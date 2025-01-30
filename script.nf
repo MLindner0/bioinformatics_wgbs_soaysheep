@@ -1,14 +1,18 @@
 /*
  * define pipeline input parameters
  */
-params.project = "/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024"
+params.project = "/mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024"
 params.seqbatch = "first_batch"
 params.pipelinebatch = "b1.1" 
 params.readsfile = "/users/bi1ml/pipelines/${params.seqbatch}_batches/read_pairs_${params.pipelinebatch}.csv"
 params.readsdir = "${params.project}/data_${params.seqbatch}"
-params.genome = "/mnt/parscratch/users/bi1ml/public/genomes/ARS-UI_Ramb_v2.0/GCF_016772045.1"
+params.genome = "/mnt/parscratch/users/bi1ml/public/genomes/ARS-UI_Ramb_v3.0_sc_rmv/GCF_016772045.2"
 params.rginfofile = "/users/bi1ml/pipelines/${params.seqbatch}_batches/read_group_info_${params.pipelinebatch}.csv"
 params.stagedir = "${params.project}/nextflow_pipeline/stage"
+
+/*
+ * Note on genome version: here, a version of Ramb v3 is used where all scaffolds have been removed from the fasta file
+ */
 
 log.info """\
     W G B S - N F   P I P E L I N E
@@ -34,6 +38,7 @@ log.info """\
 *   note: genome already prepared (in silico bisulfite converted)
 * 3 - alignment tools
 * 4 - add ons
+* 5 - telomere length estimates
 */
 include { FASTQC as FASTQC } from './modules/qc.nf'
 include { FASTQCTRIMM as FASTQCTRIMM } from './modules/qc.nf'
@@ -54,6 +59,8 @@ include { SAMTOOLSDEPTH as SAMTOOLSDEPTH } from './modules/alignment_tools.nf'
 include { SAMTOOLSBREADTH as SAMTOOLSBREADTH } from './modules/alignment_tools.nf'
 
 include { BSCONVERSION as BSCONVERSION } from './modules/add_ons.nf'
+
+include { TELSEQ as TELSEQ } from './modules/telseq.nf'
 
 /*
 * define workflow
@@ -212,4 +219,13 @@ workflow {
     align_report_ch = ALIGN.out.report
     BSCONVERSION(align_report_ch)
     BSCONVERSION.out.view { "bs_conversion: $it" }
+
+    /*
+    * --- Telomere length estimation ---
+    *
+    * run telSeq
+    */
+    TELSEQ(merge_align_out_ch)
+    TELSEQ.out.view { "telseq: $it" }
+
 }

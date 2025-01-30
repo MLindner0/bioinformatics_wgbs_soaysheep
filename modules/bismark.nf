@@ -2,8 +2,8 @@ process ALIGN {
     tag "ALIGN on $sample_id"
     publishDir params.stagedir, mode:'symlink'
     
-    memory { 80.GB * task.attempt }
-    time { 30.hour * task.attempt }
+    memory { 100.GB * task.attempt }
+    time { 48.hour * task.attempt }
     
     errorStrategy 'retry'
     maxRetries 2
@@ -26,8 +26,8 @@ process ALIGN {
 process DEDUP {
     tag "DEDUP on $sample_id"
     
-    memory { 8.GB * task.attempt }
-    time { 4.hour * task.attempt }
+    memory { 16.GB * task.attempt }
+    time { 10.hour * task.attempt }
 
     errorStrategy 'retry'
     maxRetries 2
@@ -50,7 +50,7 @@ process METHYLATION {
     publishDir params.stagedir, mode: 'symlink'
 
     memory { 8.GB * task.attempt }
-    time { 8.hour * task.attempt }
+    time { 16.hour * task.attempt }
     
     errorStrategy 'retry'
     maxRetries 2
