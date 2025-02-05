@@ -87,20 +87,20 @@ workflow {
 
     /*
     * redo trimming of read pairs using trimgalore
-    *
+    */
     TRIMGALORE(read_pairs_ch)
     TRIMGALORE.out.view { "trimming: $it" }
 
     /*
     * redo fastqc on "trimmed" read pairs
-    *
+    */
     trimgalore_ch = TRIMGALORE.out
     FASTQCTRIMM(trimgalore_ch)
     FASTQCTRIMM.out.view { "fastqc_trimm: $it" }
 
     /*
     * create multiqc report for 'raw' and trimmed read pairs
-    *
+    */
     fastqc_ch = FASTQC.out
     trimmed_fastqc_ch = FASTQCTRIMM.out
     MULTIQC(fastqc_ch.mix(trimmed_fastqc_ch).collect())
@@ -109,28 +109,28 @@ workflow {
     * --- alignment & alignment formatting ---
     *
     * bismark alignment
-    *
+    */
     ALIGN(trimgalore_ch)
     ALIGN.out.bam.view { "align.bam: $it" }
     ALIGN.out.report.view { "align.rep: $it" }
 
     /*
     * convert bismark alignment to .sam format (recommended for deduplication of wgbs data)
-    *
+    */
     first_align_ch = ALIGN.out.bam
     SAMTOOLSSAM(first_align_ch)
     SAMTOOLSSAM.out.view { "samtools_sam: $it" }
 
     /*
     * deduplication
-    *
+    */
     sam_align_ch = SAMTOOLSSAM.out
     DEDUP(sam_align_ch)
     DEDUP.out.view { "dedup: $it" }
 
     /*
     * sort alignments by coordinates
-    *
+    */
     dedup_align_ch = DEDUP.out
     SAMTOOLSCOOR(dedup_align_ch)
     SAMTOOLSCOOR.out.view { "samtools_coor: $it" }
@@ -140,7 +140,7 @@ workflow {
     *   1 - reformat tuple from SAMTOOLSCOOR.out --> rg_file_ch
     *   2 - read read group information and format --> rg_info_ch
     *   3 - combine and format file and read group channles --> add_rg_input_ch
-    *
+    */
     SAMTOOLSCOOR.out
         .map { sample, file -> [sample, file]}
         .set { rg_file_ch }
@@ -157,7 +157,7 @@ workflow {
     
     /*
     * add read group information
-    *
+    */
     PICARDRG(add_rg_input_ch)
     PICARDRG.out.view { "picard_RG: $it" }
 
@@ -168,7 +168,7 @@ workflow {
     *       change key in tuple from sample_run to sample
     *       group the three alignments for each samples based on the new key
     *       --> merge_input_ch
-    *
+    */
     PICARDRG.out
         .map { sample, file -> [sample.tokenize('_').get(0), file]}
         .groupTuple()
@@ -176,7 +176,7 @@ workflow {
 
     /*
     * merge alignments
-    *
+    */
     PICARDMERGE(merge_align_input_ch)
     PICARDMERGE.out.view { "picard_merge: $it" }
 
@@ -184,7 +184,7 @@ workflow {
     * --- methylation calling ---
     *
     * call methylation
-    *
+    */
     merge_align_out_ch = PICARDMERGE.out
     METHYLATION(merge_align_out_ch)
     METHYLATION.out.meth.view { "meth: $it" }
@@ -194,14 +194,14 @@ workflow {
     * --- EXTRA STEPS ---
     *
     * 1 - samtools alignment stats (samtools)
-    *
+    */
     SAMTOOLSSTATS(merge_align_out_ch)
     SAMTOOLSSTATS.out.view { "samtools_stats: $it" }
 
     /*
     * 2 - sort alignmet & get genome coverage (average depth) and genome breadth
     *   genome breadth is estimates for various coverage thresholds
-    *
+    */
     PICARDCOOR(merge_align_out_ch)
     PICARDCOOR.out.view { "picard_coor: $it" }
 
@@ -215,7 +215,7 @@ workflow {
 
     /*
     * 3 - get estimate of bisulfite conversion from bismark alignment report
-    *
+    */
     align_report_ch = ALIGN.out.report
     BSCONVERSION(align_report_ch)
     BSCONVERSION.out.view { "bs_conversion: $it" }
@@ -224,9 +224,8 @@ workflow {
     * --- Telomere length estimation ---
     *
     * run telSeq
-    *
+    */
     TELSEQ(merge_align_out_ch)
     TELSEQ.out.view { "telseq: $it" }
-    */
 
 }
