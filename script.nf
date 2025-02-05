@@ -76,15 +76,12 @@ workflow {
         .fromPath(params.readsfile, checkIfExists: true)
         .splitCsv( header: true )
         .map { row -> [row.nextflow_id, [row.file_R1, row.file_R2]] }
-        .view()
-        
-    /*    
         .set { read_pairs_ch }
 
     /* --- quality control & read trimming --- 
     *
     * fastqc on read pairs (already trimmed using cutadapt by Liverpool)
-    *
+    */
     FASTQC(read_pairs_ch)
     FASTQC.out.view { "fastqc: $it" }
 
