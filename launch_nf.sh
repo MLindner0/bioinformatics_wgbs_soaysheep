@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --comment=nextflow_slurm_b1.2
-#SBATCH --output=submission_logs/slurm_b1.2.log
+#SBATCH --comment=nextflow_slurm_b1.3
+#SBATCH --output=submission_logs/slurm_b1.3.log
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
