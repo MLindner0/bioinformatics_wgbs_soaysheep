@@ -4,7 +4,7 @@
 
 workflow: script.nf\
 config: nextflow.config\
-processes: modules/*.nf\
+processes: modules/*.nf
 
 ## small note on running the pipeline on HPC:
 
