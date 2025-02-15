@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --comment=nextflow_slurm_b1.3
-#SBATCH --output=submission_logs/slurm_b1.3.log
+#SBATCH --comment=nextflow_slurm_b1.4
+#SBATCH --output=submission_logs/slurm_b1.4.log
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
@@ -12,8 +12,9 @@
 
 WORKFLOW=$1
 CONFIG=$2
-PIPBATCH=$3
+SEQBATCH=$3
+PIPBATCH=$4
 
 module load Nextflow/23.10.0
 
-nextflow -C ${CONFIG} run ${WORKFLOW} --pipelinebatch ${PIPBATCH} -resume
+nextflow -C ${CONFIG} run ${WORKFLOW} --seqbatch ${SEQBATCH} --pipelinebatch ${PIPBATCH} -resume
