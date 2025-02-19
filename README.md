@@ -15,5 +15,6 @@ For example, to submit the first second (pieline-)batch of samples from the firs
 
 The pipeline is run in batches of 40 samples. After each run, files musst be moved from staged to the shared area. This has to be executed on a login node (and thus cannot be part of the pipeline) as the shared are is not accessible from working nodes on STANAGE.
 
-To move files, run: `./stage_to_shared.sh "INSERT_BATCH"`\
+To move files, run `./stage_to_shared.sh "INSERT_BATCH"` on a login-node(Working nodes cannot access the `/shared` area).\
+
 To clear stage, work and project directories, run: `./clean.sh`
