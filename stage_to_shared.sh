@@ -46,5 +46,5 @@ cp telseq_[0-9]*/*.out /shared/slate_group1/Shared/methylated_soay/soay_wgbs_mai
 
 # 1.6 log files 
 cd ${NEXTFLOWPATH}
-cp submission_logs/slurm_${PIPBATCH}.log  /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/logs/
+cp submission_logs/slurm_*${PIPBATCH}.log  /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/logs/
 
