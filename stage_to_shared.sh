@@ -1,12 +1,14 @@
 #!/bin/bash
 
-PIPBATCH=$1
+STAGEPATH=$1
+NEXTFLOWPATH=$2
+PIPBATCH=$3
 
 # before a new batch is processed, files musst be moved from staged to the shared area. This has to be executed on a login node (and thus cannot be part of the pipeline) as the shared are is not accessible from working nodes on STANAGE.
 
 # 1. move staged files to shared area
 
-cd /mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/stage/
+cd ${STAGEPATH}
 #   go to stage directory
 
 # 1.1 move alignment files and reports:
@@ -40,10 +42,9 @@ awk 'NR > 1 { print }' multiqc_data_b[0-9]*/multiqc_report_b[0-9]*/multiqc_fastq
 cp multiqc_data_b[0-9]*/multiqc_report_b[0-9].[0-9]_data/* /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/qc/temp/multiqc_fastqc_${PIPBATCH}.txt
 
 # 1.5 telseq
-cd /mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/stage/
 cp telseq_[0-9]*/*.out /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/telomere/
 
 # 1.6 log files 
-cd /users/bi1ml/pipelines/next_wgbs/
+cd ${NEXTFLOWPATH}
 cp submission_logs/slurm_${PIPBATCH}.log  /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/logs/
 
