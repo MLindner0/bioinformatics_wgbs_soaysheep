@@ -64,6 +64,8 @@ filenames.R1 <- str_split_fixed(R1,"/",9)[,9]
 filenames.R2 <- str_split_fixed(R2,"/",9)[,9]
   # get R1 and R2 file names
 
+index <- 1:length(filenames.R1)
+
 # set up loop to get data from file names:
 filenamedata <- NULL
 for(f in 1:length(filenames.R1)) {
@@ -71,7 +73,7 @@ for(f in 1:length(filenames.R1)) {
   elements.R2 <- str_split_fixed(filenames.R2[f],"_",5)
   # split filename into elements (separated by "_")
   
-  if(elements[,1]==elements.R2[,1] & elements[,4]==elements.R2[,4]) temp <- data.frame(nextflow_id=paste(elements[,1], elements[,3], elements[,4], sep="_"), sample_ref=elements[,1], adapter_seq=elements[,3], lane=elements[,4], file_R1=paste(new_path, filenames.R1[f], sep="/"), file_R2=paste(new_path, filenames.R2[f], sep="/"))
+  if(elements[,1]==elements.R2[,1] & elements[,4]==elements.R2[,4]) temp <- data.frame(nextflow_id=paste(elements[,1], elements[,3], elements[,4], index[f], sep="_"), sample_ref=elements[,1], adapter_seq=elements[,3], lane=elements[,4], file_R1=paste(new_path, filenames.R1[f], sep="/"), file_R2=paste(new_path, filenames.R2[f], sep="/"))
   # combine elements into data frame row
   
   filenamedata <- rbind(filenamedata, temp)
