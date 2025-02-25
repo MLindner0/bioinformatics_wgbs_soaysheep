@@ -79,14 +79,15 @@ for(f in 1:length(filenames.R1)) {
   nextflow_id <- paste(elements[,1], elements[,3], elements[,4], index[f], sep="_")
   new_filenames.R1 <- paste(nextflow_id, elements[,5], sep="_")
   new_filenames.R2 <- paste(nextflow_id, elements.R2[,5], sep="_")
+  # get nextflow id and new filename
   
-  if(elements[,1]==elements.R2[,1] & elements[,4]==elements.R2[,4]) temp <- data.frame(nextflow_id=paste(elements[,1], elements[,3], elements[,4], index[f], sep="_"), sample_ref=elements[,1], adapter_seq=elements[,3], lane=elements[,4], file_R1=paste(new_path, new_filenames.R1, sep="/"), file_R2=paste(new_path, new_filenames.R2, sep="/"))
+  if(elements[,1]==elements.R2[,1] & elements[,4]==elements.R2[,4]) temp <- data.frame(nextflow_id=nextflow_id, sample_ref=elements[,1], adapter_seq=elements[,3], lane=elements[,4], file_R1=paste(new_path, new_filenames.R1, sep="/"), file_R2=paste(new_path, new_filenames.R2, sep="/"))
   # combine elements into data frame row
   
   filenamedata <- rbind(filenamedata, temp)
   # add row to output data frame
   
-  # get files to rename data 
+  # get files to rename data (including test data)
   temp_rename <- data.frame(old=c(paste(new_path, filenames.R1[f], sep="/"), paste(new_path, filenames.R2[f], sep="/")), new=c(paste(new_path, new_filenames.R1, sep="/"), paste(new_path, new_filenames.R2, sep="/")))
   rename <- rbind(rename, temp_rename)
   
@@ -132,8 +133,8 @@ for(i in 1:length(batch)) {
 }
 
 # export rename file
-write.table(rename, paste(pipeline_path_main, "rename.txt", sep="/"), row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t")
-write.table(rename_test, "/users/bi1ml/test/rename/rename.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t")
+write.table(rename, paste(pipeline_path_main, "rename_b3.txt", sep="/"), row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t")
+write.table(rename_test, "/users/bi1ml/test/rename/rename_b3.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t")
 
 
 

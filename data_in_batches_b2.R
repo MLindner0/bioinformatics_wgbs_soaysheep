@@ -66,21 +66,33 @@ filenames.R1 <- gsub("_SR1", "", filenames.R1.temp1)
 filenames.R2.temp <- str_split_fixed(R2,"/",9)[,9]
 filenames.R2.temp1 <- gsub("_R1-", "-", filenames.R2.temp)
 filenames.R2 <- gsub("_SR1", "", filenames.R2.temp1)
-
   # get R1 and R2 file names
 
 # set up loop to get data from file names:
 filenamedata <- NULL
+rename <- NULL
+rename_test <- NULL
+
 for(f in 1:length(filenames.R1)) {
   elements <- str_split_fixed(filenames.R1[f],"_",4)
   elements.R2 <- str_split_fixed(filenames.R2[f],"_",4)
   # split filename into elements (separated by "_")
   
-  if(elements[,1]==elements.R2[,1] & elements[,3]==elements.R2[,3]) temp <- data.frame(nextflow_id=paste(elements[,1], elements[,2], elements[,3], sep="_"), sample_ref=elements[,1], adapter_seq=elements[,2], lane=elements[,3], file_R1=paste(new_path, filenames.R1[f], sep="/"), file_R2=paste(new_path, filenames.R2[f], sep="/"))
+  nextflow_id <- paste(elements[,1], elements[,2], elements[,3], sep="_")
+  # get nextflow id
+  
+  if(elements[,1]==elements.R2[,1] & elements[,3]==elements.R2[,3]) temp <- data.frame(nextflow_id=nextflow_id, sample_ref=elements[,1], adapter_seq=elements[,2], lane=elements[,3], file_R1=paste(new_path, filenames.R1[f], sep="/"), file_R2=paste(new_path, filenames.R2[f], sep="/"))
   # combine elements into data frame row
   
   filenamedata <- rbind(filenamedata, temp)
   # add row to output data frame
+  
+  # get files to rename data (including test data)
+  temp_rename <- data.frame(old=c(paste(new_path, filenames.R1.temp[f], sep="/"), paste(new_path, filenames.R2.temp[f], sep="/")), new=c(paste(new_path, filenames.R1, sep="/"), paste(new_path, filenames.R2, sep="/")))
+  rename <- rbind(rename, temp_rename)
+  
+  temp_rename_test <- data.frame(old=c(paste("/users/bi1ml/test/rename/files", filenames.R1.temp[f], sep="/"), paste("/users/bi1ml/test/rename/files", filenames.R2.temp[f], sep="/")), new=c(paste("/users/bi1ml/test/rename/files", new_filenames.R1, sep="/"), paste("/users/bi1ml/test/rename/files", new_filenames.R2, sep="/")))
+  rename_test <- rbind(rename_test, temp_rename_test)
 }
 
 # add batch info
@@ -99,7 +111,7 @@ read_group_info <- filenamedata[,c("nextflow_id", "sample_ref", "adapter_seq", "
 
 ### -------------- divide read pairs into batches & export .csv files
 
-# first, make a test batch of 10 samples
+# create & export one batch
 
 batch <- 1
 start <- 1
@@ -110,3 +122,9 @@ for(i in 1:length(batch)) {
   write.csv(read_group_info[start[i]:end[i],], paste(pipeline_path_main, paste("read_group_info_b2", batch[i], "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
   
 }
+
+# export rename file
+write.table(rename, paste(pipeline_path_main, "rename_b2.txt", sep="/"), row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t")
+write.table(rename_test, "/users/bi1ml/test/rename/rename_b2.txt", row.names=FALSE, col.names=FALSE, quote=FALSE, sep="\t")
+
+
