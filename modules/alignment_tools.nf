@@ -62,7 +62,7 @@ process PICARDMERGE {
     """
     mkdir align_merge_${sample_id}_logs
     mkdir align_merge_${sample_id}_logs/temp
-    picard -Xmx4096m MergeSamFiles I=${alignments[0]} I=${alignments[1]} O=align_merge_${sample_id}_logs/${sample_id}.merged.bam TMP_DIR=align_merge_${sample_id}_logs/temp SORT_ORDER=queryname
+    picard -Xmx4096m MergeSamFiles I=${alignments[0]} I=${alignments[1]} I=${alignments[2]} I=${alignments[3]} O=align_merge_${sample_id}_logs/${sample_id}.merged.bam TMP_DIR=align_merge_${sample_id}_logs/temp SORT_ORDER=queryname
     """
 }
 
