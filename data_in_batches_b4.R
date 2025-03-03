@@ -48,7 +48,7 @@ pipeline_path_main <- "/users/bi1ml/pipelines/fourth_batch_batches"
 filepaths <- read.table("/users/bi1ml/check/wgbs_main/read_files_as_processed.txt")$V9
 # filepaths_original <- read.table("/users/bi1ml/check/wgbs_main/read_files_as_processed.txt")$V11
 
-new_path <- "/mnt/parscratch/users/bip23lrb/public/methylated_soay/soay_wgbs_main_sep2024/data_third_batch"
+new_path <- "/mnt/parscratch/users/bip23lrb/public/methylated_soay/soay_wgbs_main_sep2024/data_fourth_batch"
   # note, as it is not possible to access the /shared are from a working node, we need to get the file names and paths from a file
 
 Seq.Batch <- filepaths[grepl("batch4/", filepaths)]
