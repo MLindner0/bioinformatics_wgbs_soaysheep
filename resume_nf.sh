@@ -17,4 +17,4 @@ PIPBATCH=$4
 
 module load Nextflow/23.10.0
 
-nextflow -C ${CONFIG} run ${WORKFLOW} -work-dir /mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/work --project "/mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024" --data "/mnt/parscratch/users/bo1jxs/public/methylated_soay/soay_wgbs_main_sep2024" --userdir "/users/bi1ml/pipelines" --seqbatch ${SEQBATCH} --pipelinebatch ${PIPBATCH} -resume
+nextflow -C ${CONFIG} run ${WORKFLOW} -work-dir /mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/work --project "/mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024" --data "/mnt/parscratch/users/bip23lrb/public/methylated_soay/soay_wgbs_main_sep2024" --userdir "/users/bi1ml/pipelines" --seqbatch ${SEQBATCH} --pipelinebatch ${PIPBATCH} -resume
