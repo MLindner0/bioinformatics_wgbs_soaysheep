@@ -110,8 +110,8 @@ start <- seq(1,1121,160)
 end <- c(start[1:7]+159,nrow(read_pairs))
 
 for(i in 1:length(batch)) {
-  write.csv(read_pairs[start[i]:end[i],], paste(pipeline_path_main, paste("read_pairs_b3", batch[i], "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
-  write.csv(read_group_info[start[i]:end[i],], paste(pipeline_path_main, paste("read_group_info_b3", batch[i], "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
+  write.csv(read_pairs[start[i]:end[i],], paste(pipeline_path_main, paste("read_pairs_b4", batch[i], "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
+  write.csv(read_group_info[start[i]:end[i],], paste(pipeline_path_main, paste("read_group_info_b4", batch[i], "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
   
 }
 
