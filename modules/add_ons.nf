@@ -2,6 +2,9 @@ process BSCONVERSION {
     tag "BSCONVERSION on $sample_id"
     publishDir params.stagedir, mode: 'symlink'
 
+    errorStrategy 'retry'
+    maxRetries 2
+    
     input:
     tuple val(sample_id), path(report)
 

@@ -1,6 +1,9 @@
 process FASTQC {
     tag "FASTQC on $sample_id"
 
+    errorStrategy 'retry'
+    maxRetries 2
+
     input:
     tuple val(sample_id), path(reads)
 
@@ -16,6 +19,9 @@ process FASTQC {
 
 process FASTQCTRIMM {
     tag "FASTQC on $sample_id"
+
+    errorStrategy 'retry'
+    maxRetries 2
 
     input:
     tuple val(sample_id), path(reads)
@@ -55,6 +61,9 @@ process TRIMGALORE {
 process MULTIQC {
     publishDir params.stagedir, mode:'symlink'
 
+    errorStrategy 'retry'
+    maxRetries 2
+    
     input:
     path '*'
 

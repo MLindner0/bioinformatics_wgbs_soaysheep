@@ -1,6 +1,9 @@
 process SAMTOOLSSAM {
     tag "SAMTOOLSSAM on $sample_id"
 
+    errorStrategy 'retry'
+    maxRetries 2
+
     input:
     tuple val(sample_id), path(alignment)
 
@@ -17,6 +20,9 @@ process SAMTOOLSSAM {
 
 process SAMTOOLSCOOR {
     tag "SAMTOOLSCOOR on $sample_id"
+
+    errorStrategy 'retry'
+    maxRetries 2
 
     input:
     tuple val(sample_id), path(alignment)
@@ -35,6 +41,9 @@ process SAMTOOLSCOOR {
 process PICARDRG {
     tag "PICARDRG on $sample_id"
 
+    errorStrategy 'retry'
+    maxRetries 2
+
     input:
     tuple val(sample_id), val(sample_ref), val(lane), val(batch), path(alignment)
 
@@ -51,6 +60,9 @@ process PICARDRG {
 
 process PICARDMERGE {
     tag "PICARDMERGE on $sample_id"
+
+    errorStrategy 'retry'
+    maxRetries 2
 
     input:
     tuple val(sample_id), path(alignments)
@@ -70,6 +82,9 @@ process SAMTOOLSSTATS {
     tag "SAMTOOLSSTATS on $sample_id"
     publishDir params.stagedir, mode: 'symlink'
 
+    errorStrategy 'retry'
+    maxRetries 2
+
     input:
     tuple val(sample_id), path(alignment)
 
@@ -86,6 +101,9 @@ process SAMTOOLSSTATS {
 
 process PICARDCOOR {
     tag "PICARDCOOR on $sample_id"
+
+    errorStrategy 'retry'
+    maxRetries 2
 
     input:
     tuple val(sample_id), path(alignment)
@@ -105,6 +123,9 @@ process SAMTOOLSDEPTH {
     tag "SAMTOOLSDEPTH on $sample_id"
     publishDir params.stagedir, mode: 'symlink'
 
+    errorStrategy 'retry'
+    maxRetries 2
+
     input:
     tuple val(sample_id), path(alignment)
 
@@ -122,6 +143,9 @@ process SAMTOOLSBREADTH {
     tag "SAMTOOLSBREADTH on $sample_id"
     publishDir params.stagedir, mode: 'symlink'
 
+    errorStrategy 'retry'
+    maxRetries 2
+    
     input:
     tuple val(sample_id), path(alignment)
     each cov
