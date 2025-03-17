@@ -1,14 +1,14 @@
 /*
  * define pipeline input parameters
  */
-params.project = "/mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024"
-params.data = "/mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024"
-params.userdir = "/users/bi1ml/pipelines"
-params.seqbatch = "first_batch"
-params.pipelinebatch = "b1.1" 
+params.project = "/fastdata/bi1ml/methylated_soay/soay_wgbs_main_sep2024"
+params.data = "/shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/Trimmed_renamed_2"
+params.userdir = "/home/bi1ml/pipelines"
+params.seqbatch = "pilot"
+params.pipelinebatch = "1" 
 params.readsfile = "${params.userdir}/${params.seqbatch}_batches/read_pairs_${params.pipelinebatch}.csv"
-params.readsdir = "${params.data}/data_${params.seqbatch}"
-params.genome = "/mnt/parscratch/users/bi1ml/public/genomes/ARS-UI_Ramb_v3.0_sc_rmv/GCF_016772045.2"
+params.readsdir = "${params.data}"
+params.genome = "/shared/slate_group1/Shared/genomes//ARS-UI_Ramb_v3.0_sc_rmv/GCF_016772045.2"
 params.rginfofile = "${params.userdir}/${params.seqbatch}_batches/read_group_info_${params.pipelinebatch}.csv"
 params.stagedir = "${params.project}/nextflow_pipeline/stage"
 
