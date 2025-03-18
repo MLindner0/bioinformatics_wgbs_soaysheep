@@ -15,6 +15,7 @@ CONFIG=$2
 SEQBATCH=$3
 PIPBATCH=$4
 
-module load Nextflow/22.04.0
+module use /usr/local/modulefiles/staging/eb/all
+module load Nextflow/24.04.2
 
 nextflow -C ${CONFIG} run ${WORKFLOW} -work-dir /fastdata/bi1ml/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/work --project "/fastdata/bi1ml/methylated_soay/soay_wgbs_main_sep2024" --data "/shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/Trimmed_renamed_2" --userdir "/home/bi1ml/pipelines" --seqbatch ${SEQBATCH} --pipelinebatch ${PIPBATCH} -resume
