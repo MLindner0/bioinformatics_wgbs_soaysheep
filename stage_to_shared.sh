@@ -12,7 +12,7 @@ cd ${STAGEPATH}
 #   go to stage directory
 
 # 1.1 move alignment files and reports:
-cp align_[0-9]*/*.bam /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/alignment/
+cp align_[0-9]*/*.bam /shared/slate_group_archive/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/alignment/
 cp align_[0-9]*/*.txt /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/alignment/
 
 # 1.2 move alignment stats & bs conversion
@@ -47,4 +47,7 @@ cp telseq_[0-9]*/*.out /shared/slate_group1/Shared/methylated_soay/soay_wgbs_mai
 # 1.6 log files 
 cd ${NEXTFLOWPATH}
 cp submission_logs/slurm_*${PIPBATCH}.log  /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/logs/
+
+
+mv /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/alignment/*bam /shared/slate_group_archive/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/alignment/
 
