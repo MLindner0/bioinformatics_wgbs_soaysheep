@@ -12,7 +12,7 @@ cd ${STAGEPATH}
 #   go to stage directory
 
 # 1.1 move alignment files and reports:
-cp align_[0-9]*/*.bam /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/alignment/
+cp align_[0-9]*/*.bam /shared/slate_group_archive/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/alignment/
 cp align_[0-9]*/*.txt /shared/slate_group1/Shared/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/alignment/
 
 # 1.2 move alignment stats & bs conversion
