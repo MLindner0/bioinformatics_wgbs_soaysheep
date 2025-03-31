@@ -33,13 +33,13 @@ cp multiqc_data_*/*.html /shared/slate_group1/Shared/methylated_soay/soay_wgbs_p
 # data will be added to existing file
 
 # raw:
-awk 'NR > 1 { print }' multiqc_data_b[0-9]*/multiqc_report_b[0-9]*/multiqc_fastqc.txt | grep 'fastq.gz' >> /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/qc/multiqc_fastqc_RAW.txt
+awk 'NR > 1 { print }' multiqc_data_*/multiqc_report_*/multiqc_fastqc.txt | grep 'fastq.gz' >> /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/qc/multiqc_fastqc_RAW.txt
 
 # trimmed:
-awk 'NR > 1 { print }' multiqc_data_b[0-9]*/multiqc_report_b[0-9]*/multiqc_fastqc.txt | grep 'val' >> /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/qc/multiqc_fastqc_TRIMMED.txt
+awk 'NR > 1 { print }' multiqc_data_*/multiqc_report_*/multiqc_fastqc.txt | grep 'val' >> /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/qc/multiqc_fastqc_TRIMMED.txt
 
 # keep a copy of original file
-cp multiqc_data_b[0-9]*/multiqc_report_b[0-9].[0-9]_data/* /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/qc/temp/multiqc_fastqc_${PIPBATCH}.txt
+cp multiqc_data_*/multiqc_report_*_data/* /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/qc/temp/multiqc_fastqc_${PIPBATCH}.txt
 
 # 1.5 telseq
 cp telseq_[0-9]*/*.out /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/telomere/
