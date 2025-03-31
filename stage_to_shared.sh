@@ -27,7 +27,7 @@ cp meth_[0-9]*/*.txt /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot
 
 # 1.4 multiqc
 # report (.html)
-cp multiqc_data_b[0-9]*/*.html /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/qc/
+cp multiqc_data_*/*.html /shared/slate_group1/Shared/methylated_soay/soay_wgbs_pilot_mar2023/nextflow_pipeline/qc/
 
 # data (.txt)
 # data will be added to existing file
