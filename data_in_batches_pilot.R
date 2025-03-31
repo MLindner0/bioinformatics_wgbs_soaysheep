@@ -27,7 +27,7 @@
 # to run R on BESSEMER;
 # load R module: module load R/4.0.0-foss-2020a
 # make sure R package stringr is installed
-#   otherwiese, install R package stringr: install.packages("stringr")
+#   otherwise, install R package stringr: install.packages("stringr")
 
 
 ###--- Prepare environment 
@@ -91,9 +91,9 @@ read_group_info <- filenamedata[,c("nextflow_id", "sample_ref", "adapter_seq", "
 
 # create & export batch of 40 samples
 
-batch <- 1:6
-start <- seq(1,672,120)
-end <- c(start[1:5]+119,nrow(read_pairs))
+batch <- 1:11
+start <- c(1, seq(91,672,60))
+end <- c(start[1]+89, start[2:10]+59,nrow(read_pairs))
 
 for(i in 1:length(batch)) {
   write.csv(read_pairs[start[i]:end[i],], paste(pipeline_path_main, paste(paste("read_pairs", batch[i], sep="_"), "csv", sep="."), sep="/"), row.names=FALSE, quote=FALSE)
