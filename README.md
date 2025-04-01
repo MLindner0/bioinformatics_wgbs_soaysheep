@@ -2,13 +2,30 @@
 
 ## Nextflow files and pipeline structure
 
-For details on how nextflow works, please reference the [nextflow documentations](https://training.nextflow.io/latest/). In short, a Nextflow workflow is made by joining together different processes, executed independently and are isolated from each other. The only way they can communicate is via asynchronous first-in, first-out (FIFO) queues, called `channels`, i.e. every input and output of a process is represented as a channel. The interaction between these processes, and ultimately the workflow execution flow itself, is implicitly defined by these `input` and `output` declarations. See [basic concepts in the fundamentals training](https://training.nextflow.io/latest/basic_training/intro/) for more details.
+For details on how nextflow works, please reference the [nextflow documentations](https://training.nextflow.io/latest/) as well as Nextflow's [basic concepts in the fundamentals training](https://training.nextflow.io/latest/basic_training/intro/). In short, a Nextflow workflow is made by joining together different processes, executed independently and isolated from each other. The only way they can communicate is via asynchronous first-in, first-out (FIFO) queues, called `channels`. In other words, every input and output of a process is represented as a channel. The interaction between these processes, and ultimately the workflow execution flow itself, is implicitly defined by these `input` and `output` declarations.
 
+### Workflow files
 
-Main files:
-- The `workflow file` *script.nf* defines the pipeline input parameters (`params`), loads the relevant processes from the workflow modules, and defines the channels, i.e. the input and putput declarations for all processes. 
+The following files define the workflow execution flow:
+- The `workflow file` *script.nf* defines the pipeline input parameters (`params`), loads the relevant processes from the workflow modules, and defines the channels, i.e. the input and output declarations for all processes. 
 - The `workflow module files` are located in *modules/* and include the relevant processes for (1) quality control (*qc.nf*), (2) alignment, deduplication, and methylation calling with [Bismark](http://felixkrueger.github.io/Bismark/) (*bismark.nf*), (3) alignment formatting (*alignment_tools.nf*), (4) estimation of bisulfite conversion (*add_ons.nf*), and (5) estimation of telomere length with [telseq](https://github.com/zd1/telseq).
 - The `config file` *nextflow.config* contains the pipeline cnfiguration.
+
+### Pipeline overview
+
+```mermaid
+flowchart TD
+    A[read files
+    .fastq ] --> |read trimming| B(trimmed read files
+    .fastq)
+    B --> |alignment| C[alignment files
+    .bam]
+    C --> |deduplication| D[deduplicated
+    alignment files
+    .bam ]
+    D --> |methylation calling| E[methylation call files
+    .cov.gz]
+```
 
 
 ## small note on running the pipeline on HPC:
