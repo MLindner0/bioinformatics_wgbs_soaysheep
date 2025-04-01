@@ -15,16 +15,17 @@ The following files define the workflow execution flow:
 
 ```mermaid
 flowchart TD
-    A[read files
-    .fastq ] --> |read trimming| B(trimmed read files
-    .fastq)
-    B --> |alignment| C[alignment files
-    .bam]
-    C --> |deduplication| D[deduplicated
-    alignment files
-    .bam ]
-    D --> |methylation calling| E[methylation call files
-    .cov.gz]
+    subgraph SGA [**run-specific processes**]
+        direction TB
+        A[read files <br> .fastq ] --> |read trimming| B(trimmed read files <br> .fastq)
+        B --> |alignment| C[alignment files <br> .bam]
+        C --> |deduplication| D[deduplicated <br> alignment files <br> .bam ]
+    end
+    subgraph SG2 [**sample-specific processes**]
+        direction TB
+        E[merged <br> alignment files <br> .bam] --> |methylation calling| F[methylation call files <br> .cov.gz]
+    end
+    D --> |merge runs-specific <br> alignments| SG2
 ```
 
 
