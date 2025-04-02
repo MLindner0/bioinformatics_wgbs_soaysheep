@@ -15,17 +15,26 @@ The following files define the workflow execution flow:
 
 ```mermaid
 flowchart TD
-    subgraph SGA [**run-specific processes**]
+    subgraph SGA [**run-specific files**]
         direction TB
         A[read files <br> .fastq ] --> |read trimming| B(trimmed read files <br> .fastq)
         B --> |alignment| C[alignment files <br> .bam]
         C --> |deduplication| D[deduplicated <br> alignment files <br> .bam ]
+        A --> |quality control| H[fastQC reports <br> .txt]
+        B --> |quality control| H[fastQC reports <br> .txt]
     end
-    subgraph SG2 [**sample-specific processes**]
+    subgraph SG2 [**sample-specific files**]
         direction TB
         E[merged <br> alignment files <br> .bam] --> |methylation calling| F[methylation call files <br> .cov.gz]
+        E --> |estimate genome coverage and breadth| I[alignment statistics <br> .txt]
+        E --> |run telseq| J[telomere length estimates <br> .out]
     end
-    D --> |merge runs-specific <br> alignments| SG2
+    D --> |add read groups and merge run-specific alignments| SG2
+    subgraph SG3 [**batch-specific files**]
+        direction TB
+        G[multiQC reports <br> .txt] 
+    end
+    H --> |summarize quality conrol| SG3
 ```
 
 
