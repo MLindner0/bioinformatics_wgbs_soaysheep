@@ -14,6 +14,11 @@ The following files define the workflow execution flow:
 ### Pipeline overview
 
 ```mermaid
+---
+config:
+  theme: dark
+---
+
 flowchart TD
     subgraph SGA [**run-specific files**]
         direction TB
@@ -36,6 +41,8 @@ flowchart TD
     end
     H --> |summarize quality conrol| SG3
 ```
+
+
 
 
 ## small note on running the pipeline on HPC:
