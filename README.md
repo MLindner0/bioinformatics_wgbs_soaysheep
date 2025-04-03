@@ -16,7 +16,7 @@ The following files define the workflow execution flow:
 ```mermaid
 ---
 config:
-  theme: dark
+  theme: neutral
 ---
 
 flowchart TD
