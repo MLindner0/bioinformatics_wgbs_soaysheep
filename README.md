@@ -8,7 +8,7 @@ For details on how nextflow works, please reference the [nextflow documentations
 
 The following files define the workflow execution flow:
 - The `workflow file` *script.nf* defines the pipeline input parameters (`params`), loads the relevant processes from the workflow modules, and defines the channels, i.e. the input and output declarations for all processes. 
-- The `workflow module files` are located in *modules/* and include the relevant processes for (1) quality control (*qc.nf*), (2) alignment, deduplication, and methylation calling with [Bismark](http://felixkrueger.github.io/Bismark/) (*bismark.nf*), (3) alignment formatting (*alignment_tools.nf*), (4) estimation of bisulfite conversion (*add_ons.nf*), and (5) estimation of telomere length with [telseq](https://github.com/zd1/telseq).
+- The `workflow module files` are located in *modules/* and include the relevant processes for (1) quality control (*qc.nf*), (2) alignment, deduplication, and methylation calling with [Bismark](http://felixkrueger.github.io/Bismark/) (*bismark.nf*), (3) alignment formatting (*alignment_tools.nf*), (4) estimation of bisulfite conversion (*add_ons.nf*), and (5) estimation of telomere length with [telseq](https://github.com/zd1/telseq) (*telseq.nf*).
 - The `config file` *nextflow.config* contains the pipeline cnfiguration.
 
 ### Pipeline overview
@@ -41,6 +41,56 @@ flowchart TD
     end
     H --> |summarize quality conrol| SG3
 ```
+
+**Sequencing strategy**: <br>
+The samples from the main sequencing run (n=872) were sequenced in three batches (sequencing batches). Samples within the first sequencing batch (batch1) were sequenced in 3 runs, while samples within the second and third sequencing batch, were either sequenced in 2, 3 or 4 runs. To facilitate the bioinformatic processing, samples within the second and third sequencing batch were redistributed into new pipeline batches:
+- batch2: samples sequenced in 2 runs
+- batch3: samples sequenced in 3 runs
+- batch4: samples sequenced in 4 runs
+
+The samples from the pilot sequencing run (n=224) were sequenced in one batch in 3 runs.
+
+As the numbers of runs per sample differ between pipeline batches, a small adjustemnt within the process that merges alignments (process `PICARDMERGE` in *modules/alignment_tools.nf*) is required. The number of input alignment must be adjusted when calling `picard MergeSamFiles`: <br>
+
+For samples with three runs (batch1, batch3 and pilot), use
+```
+picard -Xmx4096m MergeSamFiles I=${alignments[0]} I=${alignments[1]} I=${alignments[2]} O=align_merge_${sample_id}_logs/${sample_id}.merged.bam TMP_DIR=align_merge_${sample_id}_logs/temp SORT_ORDER=queryname
+```
+
+and for samples with e.g. four runs (batch 4) use
+
+```
+picard -Xmx4096m MergeSamFiles I=${alignments[0]} I=${alignments[1]} I=${alignments[2]} I=${alignments[3]} O=align_merge_${sample_id}_logs/${sample_id}.merged.bam TMP_DIR=align_merge_${sample_id}_logs/temp SORT_ORDER=queryname
+```
+
+To facilitate this, I created branches that are specific for the number of runs per sample. WHen running the pipeline, please fetch the correct branch before running the pipeline.
+- two runs: `tworuns`
+- three runs: `threeruns`
+- four runs: `fourruns`
+
+
+
+
+```
+process PICARDMERGE {
+    tag "PICARDMERGE on $sample_id"
+
+    input:
+    tuple val(sample_id), path(alignments)
+
+    output:
+    tuple val(sample_id), path("align_merge_${sample_id}_logs/${sample_id}.merged.bam")
+
+    script:
+    """
+    mkdir align_merge_${sample_id}_logs
+    mkdir align_merge_${sample_id}_logs/temp
+    picard -Xmx4096m MergeSamFiles I=${alignments[0]} I=${alignments[1]} I=${alignments[2]} O=align_merge_${sample_id}_logs/${sample_id}.merged.bam TMP_DIR=align_merge_${sample_id}_logs/temp SORT_ORDER=queryname
+    """
+}
+```
+
+
 
 
 
