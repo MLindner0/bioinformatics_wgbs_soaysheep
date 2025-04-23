@@ -42,7 +42,7 @@ pipeline_path_main <- "/home/bi1ml/pipelines/pilot_batches"
 filepaths <- read.table("/home/bi1ml/check/wgbs_pilot/read_files_as_processed.txt")$V9
 filepaths_original <- read.table("/home/bi1ml/check/wgbs_pilot/read_files_as_processed.txt")$V11
 
-# new_path <- "/mnt/parscratch/users/bo1jxs/public/methylated_soay/soay_wgbs_main_sep2024/data_third_batch"
+new_path <- "/mnt/parscratch/users/bip23lrb/public/methylated_soay/soay_wgbs_pilot_mar2023/Trimmed_renamed_2"
   # note, as it is not possible to access the /shared are from a working node, we need to get the file names and paths from a file
 
 R1 <- filepaths[grepl("*R1.fastq.gz$", filepaths)]
@@ -75,7 +75,7 @@ for(f in 1:length(filenames.R1)) {
   #new_filenames.R2 <- paste(nextflow_id, elements.R2[,5], sep="_")
   # get nextflow id
   
-  if(elements_O[,1]==elements_O.R2[,1] & elements_O[,4]==elements_O.R2[,4]) temp <- data.frame(nextflow_id=nextflow_id, sample_ref=elements_O[,1], adapter_seq=NA, lane=paste(elements_O[,3], elements_O[,4], sep="_"), batch="pilot", file_R1=R1[f], file_R2=R2[f])
+  if(elements_O[,1]==elements_O.R2[,1] & elements_O[,4]==elements_O.R2[,4]) temp <- data.frame(nextflow_id=nextflow_id, sample_ref=elements_O[,1], adapter_seq=NA, lane=paste(elements_O[,3], elements_O[,4], sep="_"), batch="pilot", file_R1=paste(new_path, filenames.R1[f], sep="/"), file_R2=paste(new_path, filenames.R2[f], sep="/"))
   # combine elements into data frame row
   
   filenamedata <- rbind(filenamedata, temp)
