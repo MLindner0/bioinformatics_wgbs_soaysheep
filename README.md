@@ -91,21 +91,47 @@ process PICARDMERGE {
 ```
 
 
+## Running the pipeline on HPC:
 
+Running nextflow on STANAGE (HPC), requires to load the module using `module load Nextflow/23.10.0` when used in an interactive session. When you e.g. run the test pipelines (see below). When submitting the pipeline as a batch job, loading the module is part of the submission scripts *launch_nf.sh* and *resume_nf.sh* for launching and resuming the pipeline.
 
+### Running the tets pipelines
 
+Before starting a pipeline batch, run the test scripts to see whether the pipeline interpetes the information on read pair files and read group details correctly. 
 
-## small note on running the pipeline on HPC:
+Create a tmux session, log onto a worker node (e.g. `srun --mem=16G --pty bash -i`) and load the Nextflow module (`module load Nextflow/23.10.0`).
 
-To run nextflow on STANAGE (HPC), load the module: `module load Nextflow/23.10.0`
+Then, run the first test script *test.nf* using the below code. Note, adjust your user account details and the sequencing and pipeline batch. (Here, the user is "bi1ml", the sequencing batch is "fourth_batch" and the pipeline batch is "b4.5")
 
-To submit (launch or resume) nextflow to slurm, use: `sbatch launch_nf.sh /users/bi1ml/pipelines/next_wgbs/script.nf /users/bi1ml/pipelines/next_wgbs/nextflow.config "INSERT_SEQUENCING_BATCH" "INSERT_PIPELINE_BATCH"` or `sbatch resume_nf.sh /users/bi1ml/pipelines/next_wgbs/script.nf /users/bi1ml/pipelines/next_wgbs/nextflow.config "INSERT_SEQUENCING_BATCH" "INSERT_PIPELINE_BATCH"`\
-For example, to submit the first second (pieline-)batch of samples from the first sequencing batch, run: `sbatch launch_nf.sh /users/bi1ml/pipelines/next_wgbs/script.nf /users/bi1ml/pipelines/next_wgbs/nextflow.config "first_batch" "b1.4"`
+```bash
+nextflow -C /users/bi1ml/pipelines/next_wgbs/nextflow.config run /users/bi1ml/pipelines/next_wgbs/test.nf -work-dir /mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/work --project "/mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024" --data "/mnt/parscratch/users/bip23lrb/public/methylated_soay/soay_wgbs_main_sep2024" --userdir "/users/bi1ml/pipelines" --seqbatch "fourth_batch" --pipelinebatch "b4.5" > submission_logs/test.b4.5.log
+```
 
-The pipeline is run in batches of 40 samples. After each run, files musst be moved from staged to the shared area. This has to be executed on a login node (and thus cannot be part of the pipeline) as the shared are is not accessible from working nodes on STANAGE.
+The submission log file should show no errors and the correct paths to the read pair input files grouping R1 and R2 of each run of a sample.
 
-To move files, run `./stage_to_shared.sh INSERT_STAGEDIR INSERT_NEXTFLOWDIR "INSERT_BATCH"` on a login-node (Working nodes cannot access the `/shared` area). Prrovide the path to stage directory, path to local nextflow directory (home) and pipeline batch.\
+Next, run the second test script *test2.nf* using the below code and again adjust your user account details and the sequencing and pipeline batch.
 
-To clear stage, work and project directories, run: `./clean.sh INSERT_PUBLICDIR INSERT_HOMEDIR`. Prrovide the path to nextflow directory on parscratch and, path to local nextflow directory (home).
+```bash
+nextflow -C /users/bi1ml/pipelines/next_wgbs/nextflow.config run /users/bi1ml/pipelines/next_wgbs/test2.nf -work-dir /mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024/nextflow_pipeline/work --project "/mnt/parscratch/users/bi1ml/public/methylated_soay/soay_wgbs_main_sep2024" --data "/mnt/parscratch/users/bip23lrb/public/methylated_soay/soay_wgbs_main_sep2024" --userdir "/users/bi1ml/pipelines" --seqbatch "fourth_batch" --pipelinebatch "b4.5" > submission_logs/test2.b4.5.log
+```
 
+The submission log file should show no errors and the correct read group details for each run of a sample and group all runs of a sample together.
+
+If successful, go ahead and lauch the Nextflow pipeline for your sequencing batch.
+
+### Launching the pipeline
+
+Before launching the pipeline, adjusting your user account details and the log fime name (pipeline batch) within the lauch script *launch_nf.sh*. This also inlcudes the paths in the nextflow command.
+
+Next, launch the pipeline by executing the lauch script *launch_nf.sh*, while again adjusting your user account details and the sequencing and pipeline batch.
+
+```bash
+sbatch launch_nf.sh /users/bi1ml/pipelines/next_wgbs/script.nf /users/bi1ml/pipelines/next_wgbs/nextflow.config "fourth_batch" "b4.5"
+```
+
+If you need to resume the pipeline, adjust the resume script *resume_nf.sh* (see above) and resume the pipeline by executing the resume script *resume_nf.sh*, while again adjusting your user account details and the sequencing and pipeline batch.
+
+```bash
+sbatch resume_nf.sh /users/bi1ml/pipelines/next_wgbs/script.nf /users/bi1ml/pipelines/next_wgbs/nextflow.config "fourth_batch" "b4.5"
+```
 
